@@ -20,7 +20,7 @@ public class LoginController {
 	private LoginService loginService;
 	
     @RequestMapping(value="/main/login.do")
-    public ModelAndView openSampleBoardList(CommandMap commandMap) throws Exception{
+    public ModelAndView loginController(CommandMap commandMap) throws Exception{
         
     	String address = null;
     	String flag    = null;

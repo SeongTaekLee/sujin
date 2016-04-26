@@ -5,10 +5,18 @@
      
      <select id="selectCounselList" parameterType="hashmap" resultType="hashmap">
      	<![CDATA[
-          SELECT COUNT(*) AS CHECK_USER
-  			FROM USER_INFO
-		   WHERE USER_ID = #{inputId}
- 			 AND USER_PW = #{inputPassword}
+          SELECT STUDENT_NO
+				,NM
+				,STAGE
+				,VISIT_DATE
+				,VISIT_TIME
+				,PHONE_NO
+				,CLSS
+				,RMK
+				,STATUS
+				,CLS_DETAIL
+			FROM COUNSEL
+		ORDER BY VISIT_DATE DESC, VISIT_TIME ASC;
         ]]>
      </select>
      
