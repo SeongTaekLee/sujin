@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+
+
+.s-container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .s-container {
+    width: 550px;
+  }
+}
+@media (min-width: 992px) {
+  .s-container {
+    width: 670px;
+  }
+}
+@media (min-width: 1200px) {
+  .s-container {
+    width: 770px;
+  }
+}
+
+.custom {
+	text-align:center;
+	margin-right: auto;
+ 	margin-left: auto;
+ 	margin-top : 50px;
+}
