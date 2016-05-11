@@ -14,10 +14,12 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		
 		try {
-			if( request.getSession().getAttribute("userId") == null ){
-				response.sendRedirect("/main/login");
-				return false;
+			if (request.getSession() == null && request.getRequestURI().indexOf("/login.do") > -1 )  {
+				log.info("===== 최초 로그인 시,  URI : "+request.getRequestURI());
+				return true;
 			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

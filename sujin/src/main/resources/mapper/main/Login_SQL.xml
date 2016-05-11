@@ -4,12 +4,10 @@
 <mapper namespace="login">
      
      <select id="checkUser" parameterType="hashmap" resultType="hashmap">
-     	<![CDATA[
           SELECT COUNT(*) AS CHECK_USER
   			FROM USER_INFO
 		   WHERE USER_ID = #{inputId}
  			 AND USER_PW = #{inputPassword}
-        ]]>
      </select>
      
 </mapper>
