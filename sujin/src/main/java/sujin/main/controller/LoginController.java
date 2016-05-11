@@ -36,7 +36,7 @@ public class LoginController {
     	
     	try {
     		
-    		if( session != null ) {
+    		if( session.getAttribute("user") != null ) {
     			uri = "/main/bodyCheck";
     		} else {
     			uri = "/main/login";
@@ -61,12 +61,13 @@ public class LoginController {
     		uri = "/main/login";
     	}else { 
     		Map<String, Object> map = loginService.checkUser(commandMap.getMap());
-    		
-    		if( Integer.parseInt(map.get("checkUser").toString()) > 0 ){
+    		log.info(map.toString());
+    		if( "1".equals( map.get("CHECK_USER").toString() ) ){
     			user.setLoginCondition(true);
-    			user.setUserId(commandMap.get("userId").toString());
+    			user.setUserId(commandMap.get("inputId").toString());
     			session.setAttribute("user", user);
     			uri = "/main/bodyCheck";
+    			log.info("Login Sucess!! session : "+session.getAttribute("user"));
     		}else{
     			uri = "/main/login";
     		}

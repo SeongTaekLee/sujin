@@ -14,7 +14,8 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		
 		try {
-			if (request.getSession() == null && request.getRequestURI().indexOf("/login.do") > -1 )  {
+			
+			if (request.getSession().getAttribute("user") == null && request.getRequestURI().contains("/login.do") )  {
 				log.info("===== 최초 로그인 시,  URI : "+request.getRequestURI());
 				return true;
 			}

@@ -23,7 +23,7 @@
 	
 	<div class="container">
 	<div class="s-container">
-		<form class="form-signin" action="/sujin/main/login.do" method="post">
+		<form class="form-signin" action="/sujin/main/submitLogin.do" method="post">
 			<input type="hidden" id="flag" name="flag" value="${flag }">
 			
 			<h2 class="form-signin-geading">로그인해요~</h2>		

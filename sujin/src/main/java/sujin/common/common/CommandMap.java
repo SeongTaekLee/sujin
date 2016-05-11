@@ -51,4 +51,16 @@ public class CommandMap {
     public Map<String,Object> getMap(){
         return map;
     }
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("CommandMap [map=");
+		builder.append(map);
+		builder.append("]");
+		return builder.toString();
+	}
+    
+    
+    
 }
