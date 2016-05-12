@@ -22,11 +22,12 @@ Logger log = Logger.getLogger(this.getClass());
     
     @RequestMapping(value="/main/bodyCheckDetail.do")
     public ModelAndView bodyCheckDetail() throws Exception{
-    	log.info("===== bodyCheckDetail Controller loaded");
+    	log.info("===== bodyCheckDetail Controller loaded ");
     	ModelAndView mv = new ModelAndView("/main/bodyCheckDetail");
     	
     	List<Map<String, Object>> bodyDetailList = bodyCheckDetailService.selectBodyCheckDetail();
-    	mv.addObject(bodyDetailList);
+    	mv.addObject("bodyDetailList", bodyDetailList);
+    	log.debug("===== >>>>> list size"+bodyDetailList.size());
     	
     	return mv;
     }

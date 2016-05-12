@@ -8,5 +8,7 @@
 </head>
 <body>
 
+BODY CHECK JSP
+
 </body>
 </html>

@@ -1,5 +1,8 @@
 package sujin.main.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -19,6 +22,11 @@ public class BodyCheckController {
 	
 	@RequestMapping(value="/main/bodyCheck.do")
 	public ModelAndView bodyCheckController(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("");
+		ModelAndView mv = new ModelAndView("/main/bodyCheck");
+		
+		List<Map<String, Object>> list = bodyCheckService.getBodyCheckList(commandMap.getMap());
+		
+		mv.addObject(list);
+		return mv;
 	}
 }
