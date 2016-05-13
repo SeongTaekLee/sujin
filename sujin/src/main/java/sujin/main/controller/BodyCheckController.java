@@ -1,15 +1,16 @@
 package sujin.main.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import sujin.common.common.CommandMap;
@@ -32,5 +33,19 @@ public class BodyCheckController {
 		return mv;
 	}
 	
-	
+	@RequestMapping(value="/main/bodyCheckSubmit.do")
+	@ResponseBody
+	public String  inputBodyCheckController(HttpServletRequest request, CommandMap commandMap) throws Exception{
+		// ajax 쓸때는 꼭 @ResponseBody 를 사용하고 success를 리턴해준다.!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//Map map = new HashMap();
+		log.info("---------> bodyCheckSubmit controller json : "+commandMap.toString());
+		bodyCheckService.inputBodyCheck(commandMap.getMap());
+		
+		//request.setAttribute("result","success");
+		//map.put("result", "success");
+		//return map;
+		//return mv;
+		return "success";
+		
+	}
 }

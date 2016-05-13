@@ -1,11 +1,13 @@
 package sujin.common.common;
  
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
  
-public class CommandMap {
+@SuppressWarnings("serial")
+public class CommandMap implements Serializable {
     Map<String,Object> map = new HashMap<String,Object>();
      
     public Object get(String key){

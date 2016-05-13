@@ -18,4 +18,10 @@ public class BodyCheckDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectList("bodyCheck.getBodyCheck", map);
 	}
 	
+	public void inputBodyCheck(Map<String, Object> map) throws Exception{
+		// TODO Auto-generated method stub
+		log.info(" ****************** DAO : "+map.toString());
+		update("bodyCheck.mergeBodyCheck", map);
+	}
+	
 }

@@ -45,12 +45,12 @@
       <div class="jumbotron">
 
         <h2>건강상태 입력</h2>
-		<form action="/bodyCheckSubmit.do">
+		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
 			<div class="form-group">
 			<c:forEach var = "row" items="${list}">
 			<div class="${row.BODY_NM}">
-				<h4>${row.BODY_KOR }</h4>
-					<select class="form-control" name="${row.BODY_NM}">
+				<h4>${row.BODY_KOR }</h4> 
+					<select class="form-control" name="${row.BODY_CD}">
 					  <option value="5">매우좋음</option>
 					  <option value="4">좋음</option>
 					  <option value="3">보통</option>
@@ -61,8 +61,8 @@
 			</c:forEach>
 			
 			<h4>비고</h4>
-			<textarea rows="3" class="form-control" name="REMARK"></textarea>
-	        <input type="submit" value="입력완료" class="btn btn-default">
+			<textarea rows="3" class="form-control" name="RMK"></textarea>
+	        <input type="button" value="입력완료" class="btn btn-default" onclick="inputBodyCheck();">
         </div>
         </form>
       </div>
@@ -74,12 +74,41 @@
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
 <script type="text/javascript">
 	$(document).ready(function(){    
-		var a = ${loginFlag};
-		alert(a);
-		
+		//var a = $("select[name=B001]").val();
+		//alert(a);
 	});
+	function inputBodyCheck(){ //ajax로 디비 저장시키자
+
+		var param = {B001 : $("select[name=B001]").val() ,
+					 B002 : $("select[name=B002]").val() ,
+					 B003 : $("select[name=B003]").val() ,
+					 B004 : $("select[name=B004]").val() ,
+					 B005 : $("select[name=B005]").val() ,
+					 B006 : $("select[name=B006]").val() ,
+					 B007 : $("select[name=B007]").val() ,
+					 B008 : $("select[name=B008]").val() ,
+					 RMK  : $("textarea[name=RMK]").val()
+		};
 	
-	
+		alert("##");
+	     $.ajax({
+           type    :"POST",
+           url     :"/sujin/main/bodyCheckSubmit.do",
+           dataType:"html", // 옵션이므로 JSON으로 받을게 아니면 안써도 됨
+           data    : param,
+           success : function(data) {
+                 alert("sucess  :: "+data);
+           },
+           complete : function(data) {
+        	   	 alert("complete");
+           },
+           error : function(xhr, status, error) {
+                 alert("xhr : "+xhr+"error : "+status+" error : "+error);
+           }
+	     });
+		
+		
+	}
 	
 	
 	

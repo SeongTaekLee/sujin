@@ -7,4 +7,6 @@ public interface BodyCheckService {
 
 	List<Map<String, Object>> getBodyCheckList(Map<String, Object> map) throws Exception;
 
+	void inputBodyCheck(Map<String, Object> map) throws Exception;
+
 }

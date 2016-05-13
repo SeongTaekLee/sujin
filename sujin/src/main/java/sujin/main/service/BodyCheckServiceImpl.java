@@ -23,6 +23,12 @@ public class BodyCheckServiceImpl implements BodyCheckService{
 		return bodyCheckDAO.getBodyCheckList(map);
 	}
 	
+	@Override
+	public void inputBodyCheck(Map<String, Object> map) throws Exception {
+		log.info("============================================================= "+map.toString());
+		
+		bodyCheckDAO.inputBodyCheck(map);
+	}
 	
 	
 	
