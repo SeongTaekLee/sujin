@@ -8,7 +8,7 @@
 
 </head>
 <body>
-	
+	<input type="hidden" id="loginFlag" name="loginFlag" value="${loginFlag }">
 	<div class="container">
 	<div class="s-container">
 		<form class="form-signin" action="/sujin/main/submitLogin.do" method="post">
@@ -30,6 +30,15 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){ 
+		var loginFlag = $("#loginFlag").val();
+		/* loginFlag : fail none sucess loginFail */
+		if(loginFlag == "loginFail"){
+			alert("아이디 또는 비밀번호가 맞지않습니다.");
+		}
+		if(loginFlag == "sucess"){ alert("loginFlag : "+loginFlag);
+			window.location = "/sujin/main/bodyCheck.do";
+		}
+		
 		//alert(navigator.language);
 		  //모든 웹페이지의 항목들이 로딩이 완료되었을때 처리해줄 내용
 		  var flag = $("#flag").val();

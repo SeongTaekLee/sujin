@@ -56,22 +56,27 @@ public class LoginController {
     	
     	UserVO user = new UserVO();
     	String uri = "/main/login";
-    	
+    	String loginFlag = "fail";
     	if ( commandMap.isEmpty() ) {
-    		uri = "/main/login";
+    		loginFlag = "none";
+    		//uri = "/main/login";
     	}else { 
     		Map<String, Object> map = loginService.checkUser(commandMap.getMap());
     		log.info(map.toString());
     		if( "1".equals( map.get("CHECK_USER").toString() ) ){
+    			loginFlag = "sucess";
     			user.setLoginCondition(true);
     			user.setUserId(commandMap.get("inputId").toString());
     			session.setAttribute("user", user);
-    			uri = "/main/bodyCheck";
+    			//uri = "/main/bodyCheck";
     			log.info("Login Sucess!! session : "+session.getAttribute("user"));
     		}else{
-    			uri = "/main/login";
+    			loginFlag = "loginFail";
+    			//uri = "/main/login";
     		}
     	}
+    	log.info("===== >> login Flag : "+loginFlag);
+    	mv.addObject("loginFlag", loginFlag);
     	mv.setViewName(uri);
     	
     	return mv;
@@ -82,7 +87,6 @@ public class LoginController {
     	log.info("===== logout Controller loaded");
     	
     	session.invalidate();
-    	
     	return "/main/login";
     }
 }

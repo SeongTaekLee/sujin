@@ -23,14 +23,14 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/sujin/">BodyCheck</a>
+            <a class="navbar-brand" href="/sujin/">건강상태 확인</a>
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="/sujin/main/bodyCheck.do">BodyCHeck</a></li>
-              <li class="active"><a href="/sujin/main/bodyCheckDetail.do">BodyCheckDetail</a></li>
-              <li><a href="#">Diary</a></li>
+              <li><a href="/sujin/main/bodyCheck.do">건강상태입력</a></li>
+              <li class="active"><a href="/sujin/main/bodyCheckDetail.do">건강상태상세</a></li>
+              <li><a href="#">일기(예정)</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -49,16 +49,37 @@
       <div class="jumbotron">
 
         <h1>Navbar example</h1>
-
-        <table class="table table-striped">
+        <div class="row">
+  			<div class="col-md-1 head">키 		</div>
+  			<div class="col-md-1 head">등록일   </div>
+  			<div class="col-md-1 head">머리		</div>
+  			<div class="col-md-1 head">어깨(좌)	</div>
+  			<div class="col-md-1 head">어깨(우)	</div>
+  			<div class="col-md-1 head">등		</div>
+  			<div class="col-md-1 head">속(위장)	</div>
+  			<div class="col-md-1 head">배(대장)	</div>
+  			<div class="col-md-1 head">다리		</div>
+  			<div class="col-md-1 head">팔		</div>
+  			<div class="col-md-1 head">비고		</div>
+		</div>
+		
+		
+        <table class="table table-bordered table-hover">
 			<colgroup>
 				<col width="10%"/>
 				<col width="*"/>
 				<col width="15%"/>
 				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
+				<col width="20%"/>
 			</colgroup>
 			<thead>
-				<tr>
+				<tr class="success">
 					<th scope="col"> 키 			</th>
 					<th scope="col"> 등록날짜		</th>
 					<th scope="col"> 머리			</th>
