@@ -86,7 +86,7 @@
 		$.ajax({  
 			type		:"POST",
 			url			:"/sujin/main/getBodyCheck.do",
-			dataType	:"json",
+			dataType	:"json", 
 			success 	:function(data){
 				
 				var contents = "";
