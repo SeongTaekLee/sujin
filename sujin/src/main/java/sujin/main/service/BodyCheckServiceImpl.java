@@ -18,9 +18,9 @@ public class BodyCheckServiceImpl implements BodyCheckService{
 	private BodyCheckDAO bodyCheckDAO;
 	
 	@Override
-	public List<Map<String, Object>> getBodyCheckList(Map<String, Object> map) throws Exception {
+	public List<Map<String, Object>> getBodyCheckList() throws Exception {
 		// TODO Auto-generated method stub
-		return bodyCheckDAO.getBodyCheckList(map);
+		return bodyCheckDAO.getBodyCheckList();
 	}
 	
 	@Override

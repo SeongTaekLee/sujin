@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,10 +28,23 @@ public class BodyCheckController {
 	public ModelAndView bodyCheckController(CommandMap commandMap) throws Exception{
 		ModelAndView mv = new ModelAndView("/main/bodyCheck");
 		
-		List<Map<String, Object>> list = bodyCheckService.getBodyCheckList(commandMap.getMap());
+		//List<Map<String, Object>> list = bodyCheckService.getBodyCheckList(commandMap.getMap());
+		//mv.addObject("list", list);
 		
-		mv.addObject("list", list);
 		return mv;
+	}
+	
+	@RequestMapping(value="/main/getBodyCheck.do")
+	@ResponseBody 
+	public Map<String,Object>  getBodyCheckController() throws Exception{
+		log.info("========= ajax getBodyCheck.do controller");
+		Map<String,Object> model = new HashMap<String,Object>();
+		
+		List<Map<String, Object>> list = bodyCheckService.getBodyCheckList();
+		
+		model.put("results", list);
+		//model.put("success", "sucess");
+		return model;
 	}
 	
 	@RequestMapping(value="/main/bodyCheckSubmit.do")

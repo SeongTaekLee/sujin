@@ -12,10 +12,10 @@ import sujin.common.dao.AbstractDAO;
 public class BodyCheckDAO extends AbstractDAO{
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getBodyCheckList(Map<String, Object> map ) throws Exception{
+	public List<Map<String, Object>> getBodyCheckList() throws Exception{
 		// TODO Auto-generated constructor stub
 		
-		return (List<Map<String, Object>>)selectList("bodyCheck.getBodyCheck", map);
+		return selectList("bodyCheck.getBodyCheck");
 	}
 	
 	public void inputBodyCheck(Map<String, Object> map) throws Exception{

@@ -23,7 +23,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/sujin/">건강상태 확인</a>
+            <a class="navbar-brand" href="/sujin/main/login.do">건강상태 확인</a>
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
@@ -48,48 +48,34 @@
 
       <div class="jumbotron">
 
-        <h1>Navbar example</h1>
-        <div class="row">
-  			<div class="col-md-1 head">키 		</div>
-  			<div class="col-md-1 head">등록일   </div>
-  			<div class="col-md-1 head">머리		</div>
-  			<div class="col-md-1 head">어깨(좌)	</div>
-  			<div class="col-md-1 head">어깨(우)	</div>
-  			<div class="col-md-1 head">등		</div>
-  			<div class="col-md-1 head">속(위장)	</div>
-  			<div class="col-md-1 head">배(대장)	</div>
-  			<div class="col-md-1 head">다리		</div>
-  			<div class="col-md-1 head">팔		</div>
-  			<div class="col-md-1 head">비고		</div>
-		</div>
-		
+        <h2>건강상태 상세</h2>
 		
         <table class="table table-bordered table-hover">
 			<colgroup>
 				<col width="10%"/>
-				<col width="*"/>
+				<col width="5%"/> <!-- B001 -->
+				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/> <!-- B008 -->
+				<col width="10%"/>
 				<col width="15%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
-				<col width="20%"/>
 			</colgroup>
 			<thead>
 				<tr class="success">
-					<th scope="col"> 키 			</th>
-					<th scope="col"> 등록날짜		</th>
+					<th scope="col"> 날짜			</th>
 					<th scope="col"> 머리			</th>
-					<th scope="col"> 어깨(좌)		</th>
-					<th scope="col"> 어깨(우)		</th>
+					<th scope="col"> 어깨<br>(좌)	</th>
+					<th scope="col"> 어깨<br>(우)	</th>
 					<th scope="col"> 등				</th>
-					<th scope="col"> 속(위장)		</th>
-					<th scope="col"> 배(대장)		</th>
+					<th scope="col"> 속<br>(위장)	</th>
+					<th scope="col"> 배<br>(대장)	</th>
 					<th scope="col"> 다리			</th>
 					<th scope="col"> 팔				</th>
+					<th scope="col"> 등록시간 		</th>
 					<th scope="col"> 비고			</th>
 				</tr>
 			</thead>
@@ -99,8 +85,7 @@
 					<c:when test="${fn:length(bodyDetailList) > 0}">
 						<c:forEach items="${bodyDetailList }" var="row">
 							<tr>
-								<td>${row.CHECK_NO}</td>
-								<td>${row.REG_DT}</td>
+								<td>${row.CHECK_NO_DATE}</td>
 								<td>${row.B001}</td>
 								<td>${row.B002}</td>
 								<td>${row.B003}</td>
@@ -109,6 +94,7 @@
 								<td>${row.B006}</td>
 								<td>${row.B007}</td>
 								<td>${row.B008}</td>
+								<td>${row.REG_DT}</td>
 								<td>${row.RMK}</td>
 							</tr>
 						</c:forEach>

@@ -5,7 +5,18 @@
      
      <select id="selectBodyCheckDetail" parameterType="hashmap" resultType="hashmap">
      <![CDATA[ 
-        SELECT *
+        SELECT CHECK_NO
+              ,SUBSTR(CHECK_NO, 0, 4) || '년' || SUBSTR(CHECK_NO, 5, 2) || '월' || SUBSTR(CHECK_NO, 7, 2) || '일'   AS CHECK_NO_DATE
+        	  ,B001
+        	  ,B002
+        	  ,B003
+        	  ,B004
+        	  ,B005
+        	  ,B006
+        	  ,B007
+        	  ,B008
+        	  ,SUBSTR(REG_DT, 9, 7) AS REG_DT
+        	  ,RMK
           FROM BODY_CHECK_LIST
          WHERE ROWNUM <= 10
       ORDER BY CHECK_NO DESC

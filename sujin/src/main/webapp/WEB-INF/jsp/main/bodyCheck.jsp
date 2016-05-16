@@ -19,7 +19,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/sujin/">건강상태 확인</a>
+            <a class="navbar-brand" href="/sujin/main/login.do">건강상태 확인</a>
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
@@ -46,8 +46,9 @@
 
         <h2>건강상태 입력</h2>
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
-			<div class="form-group">
-			<c:forEach var = "row" items="${list}">
+			<div class="form-group" id="draw-contents">
+			
+			<%-- <c:forEach var = "row" items="${list}">
 			<div class="${row.BODY_NM}">
 				<h4>${row.BODY_KOR }</h4> 
 					<select class="form-control" name="${row.BODY_CD}">
@@ -58,11 +59,12 @@
 					  <option value="1">매우나쁨</option>
 					</select>
 			</div>
-			</c:forEach>
+			</c:forEach> --%>
 			
-			<h4>비고</h4>
-			<textarea rows="3" class="form-control" name="RMK"></textarea>
-	        <input type="button" value="입력완료" class="btn btn-default" onclick="inputBodyCheck();">
+			<!-- <h4>비고</h4>
+			<textarea rows="3" class="form-control" name="RMK" style="resize:none;"></textarea>
+			<br/>
+	        <input type="button" value="입력완료" class="btn btn-default" onclick="inputBodyCheck();"> -->
         </div>
         </form>
       </div>
@@ -76,7 +78,49 @@
 	$(document).ready(function(){    
 		//var a = $("select[name=B001]").val();
 		//alert(a);
+		init();
+		
 	});
+	
+	function init(){ //getBodyCheck sql 가져오기
+		$.ajax({  
+			type		:"POST",
+			url			:"/sujin/main/getBodyCheck.do",
+			dataType	:"json",
+			success 	:function(data){
+				
+				var contents = "";
+				$.each(data.results, function(idx, obj) { 
+						contents += "<div class="+obj.BODY_NM+">" 								;
+						contents += "<h4>"+obj.BODY_KOR +"</h4>" 								;
+						contents += "	<select class=\"form-control\" name="+obj.BODY_CD+">"	;
+						contents += "	  <option value=\"5\">매우좋음</option>"					;
+						contents += "	  <option value=\"4\">좋음</option>	"						;
+						contents += "	  <option value=\"3\">보통</option>	"						;
+						contents += "	  <option value=\"2\">나쁨</option>	"						;
+						contents += "	  <option value=\"1\">매우나쁨</option>"					;
+						contents += "	</select>"													;
+						contents += "</div>"														;
+				});
+						contents += "<h4>비고</h4>"
+						contents += "<textarea rows=\"3\" class=\"form-control\" name=\"RMK\" style=\"resize:none;\"></textarea>";
+						contents += "<br/>"
+						contents += "<input type=\"button\" value=\"입력완료\" class=\"btn btn-default\" onclick=\"inputBodyCheck();\">";
+				
+				$("#draw-contents").html(contents); 
+				
+				
+			},
+			complete	: function(data){
+				//alert("22  "+data);
+			},
+			error		: function(xhr, status, error){
+				alert("에러가 발생했습니다. 운영자한테 문의하세요");
+			}
+		});
+		
+	}
+	
 	function inputBodyCheck(){ //ajax로 디비 저장시키자
 
 		var param = {B001 : $("select[name=B001]").val() ,
@@ -90,7 +134,6 @@
 					 RMK  : $("textarea[name=RMK]").val()
 		};
 	
-		alert("##");
 	     $.ajax({
            type    :"POST",
            url     :"/sujin/main/bodyCheckSubmit.do",
