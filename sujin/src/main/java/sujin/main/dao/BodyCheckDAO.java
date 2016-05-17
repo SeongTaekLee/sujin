@@ -24,4 +24,16 @@ public class BodyCheckDAO extends AbstractDAO{
 		update("bodyCheck.mergeBodyCheck", map);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getCDList() throws Exception{
+		// TODO Auto-generated method stub
+		return selectList("bodyCheck.getCDList");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getTodayValue() throws Exception{
+		// TODO Auto-generated method stub
+		return selectList("bodyCheck.getTodayValue");
+	}
+	
 }

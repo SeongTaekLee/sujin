@@ -9,4 +9,8 @@ public interface BodyCheckService {
 
 	void inputBodyCheck(Map<String, Object> map) throws Exception;
 
+	List<Map<String, Object>> getCdList() throws Exception;
+
+	List<Map<String, Object>> getTodayValue() throws Exception;
+
 }

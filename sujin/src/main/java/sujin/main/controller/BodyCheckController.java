@@ -42,6 +42,9 @@ public class BodyCheckController {
 		
 		List<Map<String, Object>> list = bodyCheckService.getBodyCheckList();
 		
+		List<Map<String, Object>> cdList = bodyCheckService.getCdList();
+		
+		model.put("cdList", cdList);
 		model.put("results", list);
 		//model.put("success", "sucess");
 		return model;
@@ -49,17 +52,29 @@ public class BodyCheckController {
 	
 	@RequestMapping(value="/main/bodyCheckSubmit.do")
 	@ResponseBody
-	public String  inputBodyCheckController(HttpServletRequest request, CommandMap commandMap) throws Exception{
+	public Map<String, Object>  inputBodyCheckController(HttpServletRequest request, CommandMap commandMap) throws Exception{
 		// ajax 쓸때는 꼭 @ResponseBody 를 사용하고 success를 리턴해준다.!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//Map map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		log.info("---------> bodyCheckSubmit controller json : "+commandMap.toString());
 		bodyCheckService.inputBodyCheck(commandMap.getMap());
+		map.put("success", "success");
 		
 		//request.setAttribute("result","success");
 		//map.put("result", "success");
 		//return map;
 		//return mv;
-		return "success";
+		return map;
 		
+	}
+	
+	@RequestMapping(value="/main/getTodayValue.do")
+	@ResponseBody
+	public Map<String, Object> getTodayValue() throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> list = bodyCheckService.getTodayValue();
+		
+		map.put("todayValue", list);
+		
+		return map;
 	}
 }

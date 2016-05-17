@@ -50,7 +50,7 @@
 
         <h2>건강상태 상세</h2>
 		
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" >
 			<colgroup>
 				<col width="10%"/>
 				<col width="5%"/> <!-- B001 -->
@@ -61,12 +61,12 @@
 				<col width="5%"/>
 				<col width="5%"/>
 				<col width="5%"/> <!-- B008 -->
-				<col width="10%"/>
+				<col width="5%"/>
 				<col width="15%"/>
 			</colgroup>
 			<thead>
-				<tr class="success">
-					<th scope="col"> 날짜			</th>
+				<tr class="success" id="result_th" style="text-align:center;">
+					<!-- <th scope="col"> 날짜			</th>
 					<th scope="col"> 머리			</th>
 					<th scope="col"> 어깨<br>(좌)	</th>
 					<th scope="col"> 어깨<br>(우)	</th>
@@ -76,15 +76,15 @@
 					<th scope="col"> 다리			</th>
 					<th scope="col"> 팔				</th>
 					<th scope="col"> 등록시간 		</th>
-					<th scope="col"> 비고			</th>
+					<th scope="col"> 비고			</th> -->
 				</tr>
 			</thead>
-			<tbody>
-				<c:choose>
+			<tbody id="result_tr">
+				<%-- <c:choose>
 					
 					<c:when test="${fn:length(bodyDetailList) > 0}">
 						<c:forEach items="${bodyDetailList }" var="row">
-							<tr>
+							<tr >
 								<td>${row.CHECK_NO_DATE}</td>
 								<td>${row.B001}</td>
 								<td>${row.B002}</td>
@@ -97,14 +97,14 @@
 								<td>${row.REG_DT}</td>
 								<td>${row.RMK}</td>
 							</tr>
-						</c:forEach>
+					</c:forEach>
 					</c:when>
 					<c:otherwise>
 						<tr>
 							<td colspan="4">조회된 결과가 없습니다.</td>
 						</tr>
 					</c:otherwise>
-				</c:choose>
+				</c:choose>  --%>
 			</tbody>
 		</table>	
       </div>
@@ -115,5 +115,69 @@
 		
 
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		init();
+		
+	});
+	
+	function init(){
+		
+		$.ajax({
+			type : "POST",
+			url  : "/sujin/main/getBodyCheckDetail.do",
+			dataType : "json",
+			success : function(data){  
+				
+				/* <th scope="col"> 날짜			</th> */
+				var thList = "";
+				if(data.thList.length > 0){
+					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 날짜				</th>" ;
+					$.each(data.thList, function(idx, obj){ 
+						thList += "<th scope=\"col\" style=\"text-align:center\" > "+obj.BODY_KOR+"	</th>";
+					});
+					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 등록시간 			</th>";
+					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 비고    			</th>";
+				}else{
+					thList +="<th scope=\"col\" style=\"text-align:center\" colspan=\"11\"> 조회된 값이 없습니다. </th>";
+				}
+				$("#result_th").html(thList);
+				
+				var html = "";
+				if(data.result.length > 0){
+					$.each(data.result, function(idx, obj){
+						html += "<tr>"					   ;
+						html += "<td>"+obj.CHECK_NO_DATE+"</td>";
+						html += "<td>"+obj.B001+"</td>"    ;
+						html += "<td>"+obj.B002+"</td>"    ;
+						html += "<td>"+obj.B003+"</td>"    ;
+						html += "<td>"+obj.B004+"</td>"    ;
+						html += "<td>"+obj.B005+"</td>"    ;
+						html += "<td>"+obj.B006+"</td>"    ;
+						html += "<td>"+obj.B007+"</td>"    ;
+						html += "<td>"+obj.B008+"</td>"    ;
+						html += "<td>"+obj.REG_DT+"</td>"  ;
+						html += "<td>"+obj.RMK+"</td>"     ;
+						html += "</tr>"					   ;
+					});
+				}else{
+					html += "<tr><td style=\"  text-align:center;  \" colspan=\"11\"> 조회된 결과값이 없습니다. </td></tr>";
+				}
+				
+				$("#result_tr").html(html);
+			},
+			error : function(xhr, status , error ){
+				alert(" status : "+status+"  error: "+ error);
+			},
+			complete : function(data){
+				
+			}
+			
+			
+		});
+		
+		
+	}
+</script>
 </body>
 </html>

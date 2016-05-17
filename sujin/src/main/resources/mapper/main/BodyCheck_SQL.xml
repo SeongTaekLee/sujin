@@ -28,6 +28,29 @@
      	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD')
      </select>
      
+     <select id="getCDList" resultType="hashmap">
+     	SELECT CODE_NM
+     	      ,CODE_CLASS
+     	      ,CODE_VAL
+     	  FROM CODE_TB
+      ORDER BY CODE_CD
+     </select>
+     
+     <select id="getTodayValue" resultType="hashmap">
+     	SELECT CHECK_NO
+     	 	  ,B001
+     	 	  ,B002
+     	 	  ,B003
+     	 	  ,B004
+     	 	  ,B005
+     	 	  ,B006
+     	 	  ,B007
+     	 	  ,B008
+     	 	  ,RMK
+     	  FROM BODY_CHECK_LIST
+     	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD') 
+     </select>
+     
      <update id="mergeBodyCheck" parameterType="map" >
      	MERGE INTO BODY_CHECK_LIST A
      	     USING (

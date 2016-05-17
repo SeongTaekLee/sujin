@@ -17,5 +17,11 @@ public class BodyCheckDetailDAO extends AbstractDAO{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getThList() throws Exception{
+		// TODO Auto-generated method stub
+		return selectList("bodyCheckDetail.getThList");
+	}
+	
 
 }

@@ -48,24 +48,7 @@
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
 			<div class="form-group" id="draw-contents">
 			
-			<%-- <c:forEach var = "row" items="${list}">
-			<div class="${row.BODY_NM}">
-				<h4>${row.BODY_KOR }</h4> 
-					<select class="form-control" name="${row.BODY_CD}">
-					  <option value="5">매우좋음</option>
-					  <option value="4">좋음</option>
-					  <option value="3">보통</option>
-					  <option value="2">나쁨</option>
-					  <option value="1">매우나쁨</option>
-					</select>
-			</div>
-			</c:forEach> --%>
-			
-			<!-- <h4>비고</h4>
-			<textarea rows="3" class="form-control" name="RMK" style="resize:none;"></textarea>
-			<br/>
-	        <input type="button" value="입력완료" class="btn btn-default" onclick="inputBodyCheck();"> -->
-        </div>
+        	</div>
         </form>
       </div>
 
@@ -76,10 +59,8 @@
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
 <script type="text/javascript">
 	$(document).ready(function(){    
-		//var a = $("select[name=B001]").val();
-		//alert(a);
 		init();
-		
+		//setValue();
 	});
 	
 	function init(){ //getBodyCheck sql 가져오기
@@ -88,17 +69,19 @@
 			url			:"/sujin/main/getBodyCheck.do",
 			dataType	:"json", 
 			success 	:function(data){
+				//alert(JSON.stringify(data));
+				
+				var cd = "";
+				$.each(data.cdList, function(idx, obj) { 
+					cd += "<option value=\""+obj.CODE_VAL+"\">"+obj.CODE_NM+"</option>"   ;
+				});
 				
 				var contents = "";
 				$.each(data.results, function(idx, obj) { 
 						contents += "<div class="+obj.BODY_NM+">" 								;
 						contents += "<h4>"+obj.BODY_KOR +"</h4>" 								;
 						contents += "	<select class=\"form-control\" name="+obj.BODY_CD+">"	;
-						contents += "	  <option value=\"5\">매우좋음</option>"					;
-						contents += "	  <option value=\"4\">좋음</option>	"						;
-						contents += "	  <option value=\"3\">보통</option>	"						;
-						contents += "	  <option value=\"2\">나쁨</option>	"						;
-						contents += "	  <option value=\"1\">매우나쁨</option>"					;
+						contents += cd															;
 						contents += "	</select>"													;
 						contents += "</div>"														;
 				});
@@ -109,9 +92,9 @@
 				
 				$("#draw-contents").html(contents); 
 				
-				
 			},
 			complete	: function(data){
+				setValue();
 				//alert("22  "+data);
 			},
 			error		: function(xhr, status, error){
@@ -121,8 +104,48 @@
 		
 	}
 	
+	function setValue(){ //금일 저장된 값이 있으면 세팅
+		$.ajax({
+			type : "POST",
+			url  : "/sujin/main/getTodayValue.do",
+			dataType : "JSON",
+			success : function(data){
+				if(data.todayValue.length > 0){
+					//var a= $(".HEAD").find("[name=B001]").val();
+					knownJsonKey(data);
+				}
+			},
+			error : function(xhr, status, error){
+				alert(status);
+			}
+		});
+	}
+	function knownJsonKey(data){ //json key로 셀렉터 찾아서 value 세팅하장
+		for (var i = 0; i < data.todayValue.length; i++) { 
+			/* for (var prop in data.todayValue[i]) {
+				if (data.todayValue[i].hasOwnProperty(prop)) {
+					var key = prop;
+					var val = data.todayValue[i][key];
+					alert("key : "+key+"  val : "+val);
+					//    $("."+key).find("[name=+"val"+]");   //안되는구나....변수는 못들어가니??....
+					
+					//alert(key);
+				}
+			} */
+			//alert(data.todayValue[0].B001);
+			$(".HEAD")		.find("[name=B001]").val(data.todayValue[0].B001);
+			$(".SHOULDER_L").find("[name=B002]").val(data.todayValue[0].B002);
+			$(".SHOULDER_R").find("[name=B003]").val(data.todayValue[0].B003);
+			$(".BACK")		.find("[name=B004]").val(data.todayValue[0].B004);
+			$(".STOMACH")	.find("[name=B005]").val(data.todayValue[0].B005);
+			$(".ABDOMEN")	.find("[name=B006]").val(data.todayValue[0].B006);
+			$(".LEG")		.find("[name=B007]").val(data.todayValue[0].B007);
+			$(".ARM")		.find("[name=B008]").val(data.todayValue[0].B008);
+			$("textarea[name=RMK]").val(data.todayValue[0].RMK);
+		}
+	}
+	
 	function inputBodyCheck(){ //ajax로 디비 저장시키자
-
 		var param = {B001 : $("select[name=B001]").val() ,
 					 B002 : $("select[name=B002]").val() ,
 					 B003 : $("select[name=B003]").val() ,
@@ -137,16 +160,16 @@
 	     $.ajax({
            type    :"POST",
            url     :"/sujin/main/bodyCheckSubmit.do",
-           dataType:"html", // 옵션이므로 JSON으로 받을게 아니면 안써도 됨
+           dataType:"JSON", // 옵션이므로 JSON으로 받을게 아니면 안써도 됨
            data    : param,
            success : function(data) {
-                 alert("sucess  :: "+data);
+                 alert("저장되었습니다.");
            },
            complete : function(data) {
-        	   	 alert("complete");
+        	   	 //alert(JSON.stringify(data));
            },
            error : function(xhr, status, error) {
-                 alert("xhr : "+xhr+"error : "+status+" error : "+error);
+                 //alert("xhr : "+xhr+"error : "+status+" error : "+error);
            }
 	     });
 		

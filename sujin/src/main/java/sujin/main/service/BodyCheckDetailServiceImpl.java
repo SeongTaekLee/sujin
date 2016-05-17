@@ -23,4 +23,10 @@ public class BodyCheckDetailServiceImpl implements BodyCheckDetailService{
 		return bodyCheckDetailDAO.selectBodyCheckDetail();
 	}
 	
+	@Override
+	public List<Map<String, Object>> getThList() throws Exception {
+		// TODO Auto-generated method stub
+		return bodyCheckDetailDAO.getThList();
+	}
+	
 }

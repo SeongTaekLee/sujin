@@ -7,4 +7,6 @@ public interface BodyCheckDetailService {
 
 	List<Map<String, Object>> selectBodyCheckDetail() throws Exception;
 
+	List<Map<String, Object>> getThList() throws Exception;
+
 }

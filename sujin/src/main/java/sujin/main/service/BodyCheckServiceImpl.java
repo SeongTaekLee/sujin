@@ -30,6 +30,16 @@ public class BodyCheckServiceImpl implements BodyCheckService{
 		bodyCheckDAO.inputBodyCheck(map);
 	}
 	
+	@Override
+	public List<Map<String, Object>> getCdList() throws Exception {
+		// TODO Auto-generated method stub
+		return bodyCheckDAO.getCDList();
+	}
 	
+	@Override
+	public List<Map<String, Object>> getTodayValue() throws Exception {
+		// TODO Auto-generated method stub
+		return bodyCheckDAO.getTodayValue();
+	}
 	
 }
