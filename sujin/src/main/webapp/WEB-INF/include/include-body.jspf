@@ -2,3 +2,6 @@
 
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="/sujin/js/bootstrap.js"></script>
+
+<!-- 구글 차트 api -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

@@ -13,4 +13,6 @@ public interface BodyCheckService {
 
 	List<Map<String, Object>> getTodayValue() throws Exception;
 
+	List<Map<String, Object>> getChartData(Map<String, Object> map) throws Exception;
+
 }

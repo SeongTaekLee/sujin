@@ -22,7 +22,7 @@
      	      ,B006
      	      ,B007
      	      ,B008
-     	      ,REG_DT
+     	      ,TO_CHAR(REG_DT, 'hh24"시"mi"분"ss"초"')
      	      ,RMK
      	  FROM BODY_CHECK_LIST
      	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD')
@@ -51,7 +51,47 @@
      	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD') 
      </select>
      
-     <update id="mergeBodyCheck" parameterType="map" >
+     <select id="getChartData" parameterType="hashmap" resultType="hashmap">
+     	<!-- 
+     	SELECT T1.CHECK_NO
+     	      ,T1.COL_AVG 
+     	  FROM (
+					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW') AS CHECK_NO   
+					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
+					    FROM BODY_CHECK_LIST
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (7*9)
+					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW')
+			    ) T1
+		ORDER BY T1.CHECK_NO DESC
+		 -->
+		
+     	<![CDATA[  
+     	SELECT T1.CHECK_NO
+     	      ,T1.COL_AVG 
+     	  FROM (
+					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMDD') AS CHECK_NO   
+					        ,ROUND( (B001+B002+B003+B004+B005+B006+B007+B008)/8 , 2) AS COL_AVG
+					    FROM BODY_CHECK_LIST
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (1*10)
+			    ) T1
+		ORDER BY T1.CHECK_NO DESC
+     	]]>
+     	<!-- 
+     	<if test="${DATE_TYPE}=='weekly'">
+     	SELECT T1.CHECK_NO
+     	      ,T1.COL_AVG 
+     	  FROM (
+					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW') AS CHECK_NO   
+					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
+					    FROM BODY_CHECK_LIST
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (7*9)
+					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW')
+			    ) T1
+		ORDER BY T1.CHECK_NO DESC
+     	</if> -->
+     </select>
+     
+     <update id="mergeBodyCheck" parameterType="hashmap" >
      	MERGE INTO BODY_CHECK_LIST A
      	     USING (
      	     		SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS CHECK_NO
@@ -63,7 +103,7 @@
      	     			  ,'${B006}' AS B006
      	     			  ,'${B007}' AS B007
      	     			  ,'${B008}' AS B008
-     	     			  ,TO_CHAR(SYSDATE, 'YYYYMMDD hhmmss') AS REG_DT
+     	     			  , SYSDATE  AS REG_DT
      	     			  ,'${RMK}'  AS RMK
      	     		  FROM DUAL
      	     ) B

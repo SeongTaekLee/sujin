@@ -35,5 +35,13 @@ public class BodyCheckDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return selectList("bodyCheck.getTodayValue");
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getChartData(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return selectList("bodyCheck.getChartData", map);
+	}
+
+	
 	
 }

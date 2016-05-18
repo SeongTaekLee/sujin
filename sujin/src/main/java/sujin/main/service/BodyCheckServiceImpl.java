@@ -42,4 +42,12 @@ public class BodyCheckServiceImpl implements BodyCheckService{
 		return bodyCheckDAO.getTodayValue();
 	}
 	
+	@Override
+	public List<Map<String, Object>> getChartData(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return bodyCheckDAO.getChartData(map);
+	}
+	
+	
 }

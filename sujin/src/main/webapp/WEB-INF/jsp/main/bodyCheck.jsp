@@ -41,9 +41,20 @@
 
 
       <!-- Main component for a primary marketing message or call to action -->
-
+	  <div class="jumbotron">
+		<h2>차트</h2>
+		<div id = "checkVal"> </div>
+		<div id="line_top_x">
+		
+		</div>
+		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="daily"   >
+		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="weekly"  >
+		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="monthly" >
+	  </div>
+	  
+	  
       <div class="jumbotron">
-
+		
         <h2>건강상태 입력</h2>
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
 			<div class="form-group" id="draw-contents">
@@ -58,8 +69,16 @@
 
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
 <script type="text/javascript">
+	var chartDataArr = new Array();
 	$(document).ready(function(){    
 		init();
+
+		fnGetChartData();
+		
+		$(":input[name=clickChartData]").click(function(){
+			
+		});
+		
 		//setValue();
 	});
 	
@@ -122,7 +141,7 @@
 	}
 	function knownJsonKey(data){ //json key로 셀렉터 찾아서 value 세팅하장
 		for (var i = 0; i < data.todayValue.length; i++) { 
-			/* for (var prop in data.todayValue[i]) {
+			/* for (var prop in data.todayValue[i]) { // json key 값 빼오기 *************
 				if (data.todayValue[i].hasOwnProperty(prop)) {
 					var key = prop;
 					var val = data.todayValue[i][key];
@@ -176,6 +195,80 @@
 		
 	}
 	
+	/* -------------------------------------[구글 차트]------------------------------------------- */
+	google.charts.load('current', {'packages':['line']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {   
+    	
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Day');
+      data.addColumn('number', 'AVG');
+ 
+      /* data.addRows([
+        [1,  37.8],
+        [2,  30.9],
+        [3,  25.4],
+        [4,  11.7],
+        [5,  11.9]
+      ]); */
+
+      data.addRows(chartDataArr); 
+
+      var options = {
+        chart: {
+          title: 'Score of Health',
+          subtitle: 'Daily'
+        },
+        width:  $(".jumbotron").first().width(),
+
+        axes: {
+          x: {
+            0: {side: 'top'}
+          }
+        }
+      };
+
+      var chart = new google.charts.Line(document.getElementById('line_top_x'));
+
+      chart.draw(data, options);
+    }
+	
+	/* ----------------------------------[ 구글 차트 창크기 조절]--------------------------------------- */
+	
+	
+	$(window).resize( function(){
+		var w = $(".jumbotron").first().width();
+		//$("#checkVal").html(w); //가로길이 확인
+		drawChart();
+		
+	} ).resize();
+	
+	/* ------------------------[차트 데이터 가져오기]----------------------------- */
+	function fnGetChartData(dateType){
+		//alert(dateType);
+		$.ajax({
+			data 		: "POST",
+			url			: "/sujin/main/getChartData.do",
+			dataType 	: "JSON",
+			param		: {DATE_TYPE : dateType},
+			success		: function(data){
+				$.each(data.chartData, function(idx, obj){ 
+					chartDataArr.unshift(new Array(String(obj.CHECK_NO) , obj.COL_AVG));
+				});
+				drawChart();
+			},
+			complete	: function(data){
+				
+			},
+			error		: function(xhr, status, error){
+				alert("error : "+status);
+			}
+		});
+		
+		chartData = "";
+	}
 	
 	
 </script>
