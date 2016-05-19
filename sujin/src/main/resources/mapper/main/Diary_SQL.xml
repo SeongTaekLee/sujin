@@ -4,17 +4,22 @@
 
 
 <select id="getDiaryList" parameterType="hashmap" resultType="hashmap">
-	SELECT 1
-	  FROM DUAL
+	SELECT BASIC.DIARY_NO
+		  ,BASIC.WRITER
+		  ,BASIC.SUBJECT
+		  ,BASIC.DIARY
+		  ,BASIC.REG_DT
+	  FROM DIARY BASIC
+  ORDER BY REG_DT 
 </select>
 
 <update id="saveDiary" parameterType="hashmap">
 	MERGE INTO DIARY TARGET
-	     USING (SELECT  #{} AS DIARY_NO
-	                   ,#{} AS WRITER
-	                   ,#{} AS SUBJECT
-	                   ,#{} AS DIARY
-	                   ,SYSDATE AS REG_DT
+	     USING (SELECT  #{DIARY_NO} AS DIARY_NO
+	                   ,#{WRITER  } AS WRITER
+	                   ,#{SUBJECT } AS SUBJECT
+	                   ,#{DIARY   } AS DIARY
+	                   ,SYSDATE     AS REG_DT
 	     		  FROM DUAL
 	     		) SOURCE
 	        ON (TARGET.DIARY_NO = SOURCE.DIARY_NO)
