@@ -8,4 +8,25 @@
 	  FROM DUAL
 </select>
 
+<update id="saveDiary" parameterType="hashmap">
+	MERGE INTO DIARY TARGET
+	     USING (SELECT  #{} AS DIARY_NO
+	                   ,#{} AS WRITER
+	                   ,#{} AS SUBJECT
+	                   ,#{} AS DIARY
+	                   ,SYSDATE AS REG_DT
+	     		  FROM DUAL
+	     		) SOURCE
+	        ON (TARGET.DIARY_NO = SOURCE.DIARY_NO)
+    WHEN MATCHED THEN
+        UPDATE
+           SET TARGET.WRITER  = SOURCE.WRITER,
+               TARGET.SUBJECT = SOURCE.SUBJECT,
+               TARGET.DIARY   = SOURCE.DIARY,
+               TARGET.REG_DT  = SOURCE.REG_DT
+    WHEN NOT MATCHED THEN
+        INSERT (TARGET.DIARY_NO,  TARGET.WRITER, TARGET.SUBJECT, TARGET.DIARY, TARGET.REG_DT)
+        VALUEE (COMM_SEQ.NEXTVAL, SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
+</update>
+
 </mapper>

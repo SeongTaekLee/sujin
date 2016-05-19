@@ -43,22 +43,17 @@
 		
         <h2>Diary</h2>
         <br/>
-        <img src="/sujin/smarteditor/img/bg_quote2.gif">
+        
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
-			<div class="form-group" id="draw-contents">
-				<textarea name="content" id="content" >11</textarea>
-				<script type="text/javascript">
-					 var oEditors = [];
-					 nhn.husky.EZCreator.createInIFrame({
-					 oAppRef: oEditors,
-					 elPlaceHolder: "content", //textarea에서 지정한 id와 일치해야 합니다.
-					 sSkinURI: "sujin/smarteditor/SmartEditor2Skin.html",
-					 //sSkinURI: "/sujin/src/main/webapp/smarteditor/SmartEditor2Skin.html",
-					 fCreator: "createSEditor2"
-					 });
-				</script>
+			<div class="form-group" >
+				<label for="subject">제목</label>
+				<input type="text" id="subject" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="smarteditor">내용</label>
+				<textarea id="smarteditor" class="form-control" style="width:98%;"></textarea>
 				<br/>
-				<input type="button" class="btn btn-default" value="저장">
+				<input type="button" id="submit_btn" class="btn btn-default" value="저장">
         	</div>
         </form>
       </div>
@@ -68,5 +63,67 @@
 
 
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
+
+<script type="text/javascript">
+$(document).ready(function(){ //alert("docu ready");
+    //전역변수선언
+    var editor_object = [];
+     
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: editor_object,
+        elPlaceHolder: "smarteditor",
+        sSkinURI: "/sujin/smartEditor/SmartEditor2Skin.html", 
+        htParams : {
+            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseToolbar : true,             
+            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseVerticalResizer : true,     
+            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseModeChanger : true, 
+        }
+    });
+     
+    //전송버튼 클릭이벤트
+    $("#submit_btn").click(function(){
+        //id가 smarteditor인 textarea에 에디터에서 대입
+        editor_object.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+         
+        // 이부분에 에디터 validation 검증
+         
+        //폼 submit
+        var subject  = $("#subject")    .val();
+        var contents = $("#smarteditor").val();
+        alert("subject="+subject+"contents="+contents);
+        
+        
+        if(subject == null || subject == "" || contents == null || contents == "<p>&nbsp;</p>"){
+        	alert("제목과 내용에 값을 입력핫~쎄용");
+        	return;
+        }
+        var param    = {subject  : subject, 
+        				contents : contents
+        };
+        //alert("param : "+JSON.stringify(param));
+        
+        $.ajax({  
+        	type		: "POST",
+        	dataType	: "JSON",
+        	url			: "/sujin/main/saveDiary.do",
+        	data		: param,
+        	success		: function(data){
+        		alert(JSON.stringify(data));
+        	},
+        	complete	:function(data){
+        		
+        	},
+        	error		:function(xhr, status, error){
+        		alert(status);
+        	}
+        	
+        });
+    })
+})
+
+</script>
 </body>
 </html>

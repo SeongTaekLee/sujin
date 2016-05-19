@@ -6,5 +6,7 @@ import java.util.Map;
 public interface DiaryService {
 
 	List<Map<String, Object>> getDiaryList() throws Exception;
+
+	void saveDiary(Map<String, Object> map) throws Exception;
 	
 }

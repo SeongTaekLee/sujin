@@ -22,4 +22,10 @@ public class DiaryServiceImpl implements DiaryService{
 		// TODO Auto-generated method stub
 		return diaryDAO.getDiaryList();
 	}
+	
+	@Override
+	public void saveDiary(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		diaryDAO.saveDiary(map);
+	}
 }
