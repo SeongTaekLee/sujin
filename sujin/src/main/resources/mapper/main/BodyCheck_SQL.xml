@@ -65,17 +65,33 @@
 		ORDER BY T1.CHECK_NO DESC
 		 -->
 		
-     	<![CDATA[  
+  
      	SELECT T1.CHECK_NO
      	      ,T1.COL_AVG 
      	  FROM (
-					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMDD') AS CHECK_NO   
+     	  <if test="DATE_TYPE=='daily'">
+					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'MM"월"DD"일"') AS CHECK_NO   
 					        ,ROUND( (B001+B002+B003+B004+B005+B006+B007+B008)/8 , 2) AS COL_AVG
 					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (1*10)
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD')  <![CDATA[>=]]> SYSDATE- (1*9)
+		  </if>
+		  <if test="DATE_TYPE=='weekly'">
+		  			  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"WW"주"') AS CHECK_NO   
+					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
+					    FROM BODY_CHECK_LIST
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[>=]]> SYSDATE- (7*9)
+					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"WW"주"')
+		  </if>
+		  <if test="DATE_TYPE=='monthly'">
+		  			  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"MM"월"') AS CHECK_NO   
+					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
+					    FROM BODY_CHECK_LIST
+					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[>=]]> ADD_MONTHS(SYSDATE , -9 )
+					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"MM"월"')
+		  </if>
 			    ) T1
 		ORDER BY T1.CHECK_NO DESC
-     	]]>
+     	
      	<!-- 
      	<if test="${DATE_TYPE}=='weekly'">
      	SELECT T1.CHECK_NO

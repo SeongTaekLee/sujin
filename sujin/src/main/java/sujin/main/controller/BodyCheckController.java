@@ -81,16 +81,18 @@ public class BodyCheckController {
 	@RequestMapping(value="/main/getChartData.do")
 	@ResponseBody
 	public Map<String, Object> getChartData(CommandMap commandMap) throws Exception{
-		log.info("============== getChartData.do");
+		log.info("============== getChartData.do  dateType : "+commandMap.get("DATE_TYPE"));
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		if(commandMap.isEmpty()) commandMap.put("DATE_TYPE", "daily");
+		if(commandMap.get("DATE_TYPE") == null || "".equals(commandMap.get("DATE_TYPE"))) commandMap.put("DATE_TYPE", "daily"); //날짜 기본값 세팅
 		// daily weekly monthly
+		//값 세팅
+		
 		
 		List<Map<String, Object>> list	= bodyCheckService.getChartData(commandMap.getMap());
 		
 		map.put("chartData", list);
-		
+		log.info("-------------------------------------------------------- "+commandMap.get("DATE_TYPE"));
 		return map;
 	}
 }

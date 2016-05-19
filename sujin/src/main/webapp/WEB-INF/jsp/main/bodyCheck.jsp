@@ -43,13 +43,15 @@
       <!-- Main component for a primary marketing message or call to action -->
 	  <div class="jumbotron">
 		<h2>차트</h2>
+		<div class="dateTypeBtnWrap">
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataD" value="daily"   >
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataW" value="weekly"  >
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataM" value="monthly" >
+		</div>
 		<div id = "checkVal"> </div>
 		<div id="line_top_x">
 		
 		</div>
-		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="daily"   >
-		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="weekly"  >
-		<input type="button" class="btn btn-default clickChartData" name="clickChartData" value="monthly" >
 	  </div>
 	  
 	  
@@ -75,14 +77,23 @@
 
 		fnGetChartData();
 		
-		$(":input[name=clickChartData]").click(function(){
-			
-		});
+		$(":input[name=clickChartDataD]").click(function(){
+			var dateType = "daily"; 
+			fnGetChartData(dateType);
+		}); 
+		$(":input[name=clickChartDataW]").click(function(){
+			var dateType = "weekly"; 
+			fnGetChartData(dateType);
+		}); 
+		$(":input[name=clickChartDataM]").click(function(){
+			var dateType = "monthly"; 
+			fnGetChartData(dateType);
+		}); 
 		
-		//setValue();
+		
 	});
 	
-	function init(){ //getBodyCheck sql 가져오기
+	function init(){ //getBodyCheck sql 가져오기(form)
 		$.ajax({  
 			type		:"POST",
 			url			:"/sujin/main/getBodyCheck.do",
@@ -114,7 +125,7 @@
 			},
 			complete	: function(data){
 				setValue();
-				//alert("22  "+data);
+				
 			},
 			error		: function(xhr, status, error){
 				alert("에러가 발생했습니다. 운영자한테 문의하세요");
@@ -248,19 +259,22 @@
 	/* ------------------------[차트 데이터 가져오기]----------------------------- */
 	function fnGetChartData(dateType){
 		//alert(dateType);
+		param = {DATE_TYPE : dateType};
+		
 		$.ajax({
 			data 		: "POST",
 			url			: "/sujin/main/getChartData.do",
 			dataType 	: "JSON",
-			param		: {DATE_TYPE : dateType},
+			data		: {DATE_TYPE : dateType},
 			success		: function(data){
+				chartDataArr = new Array();
 				$.each(data.chartData, function(idx, obj){ 
 					chartDataArr.unshift(new Array(String(obj.CHECK_NO) , obj.COL_AVG));
 				});
 				drawChart();
 			},
 			complete	: function(data){
-				
+				//alert(JSON.stringify(data));
 			},
 			error		: function(xhr, status, error){
 				alert("error : "+status);
