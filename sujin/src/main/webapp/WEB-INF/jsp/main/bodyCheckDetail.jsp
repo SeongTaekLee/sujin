@@ -30,7 +30,7 @@
             <ul class="nav navbar-nav">
               <li><a href="/sujin/main/bodyCheck.do">건강상태입력</a></li>
               <li class="active"><a href="/sujin/main/bodyCheckDetail.do">건강상태상세</a></li>
-              <li><a href="#">일기(예정)</a></li>
+              <li><a href="/sujin/main/diary.do">일기</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
