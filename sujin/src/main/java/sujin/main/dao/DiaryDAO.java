@@ -21,7 +21,7 @@ public class DiaryDAO extends AbstractDAO{
 
 	public void saveDiary(Map<String, Object> map) throws Exception{
 		// TODO Auto-generated method stub
-		selectList("diary.save", map);
+		selectList("diary.saveDiary", map);
 	}
 	
 	

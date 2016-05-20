@@ -15,10 +15,10 @@
 
 <update id="saveDiary" parameterType="hashmap">
 	MERGE INTO DIARY TARGET
-	     USING (SELECT  #{DIARY_NO} AS DIARY_NO
-	                   ,#{WRITER  } AS WRITER
-	                   ,#{SUBJECT } AS SUBJECT
-	                   ,#{DIARY   } AS DIARY
+	     USING (SELECT  '${DIARY_NO}' AS DIARY_NO
+	                   ,'${WRITER  }' AS WRITER
+	                   ,'${SUBJECT }' AS SUBJECT
+	                   ,'${DIARY   }' AS DIARY
 	                   ,SYSDATE     AS REG_DT
 	     		  FROM DUAL
 	     		) SOURCE
@@ -31,7 +31,7 @@
                TARGET.REG_DT  = SOURCE.REG_DT
     WHEN NOT MATCHED THEN
         INSERT (TARGET.DIARY_NO,  TARGET.WRITER, TARGET.SUBJECT, TARGET.DIARY, TARGET.REG_DT)
-        VALUEE (COMM_SEQ.NEXTVAL, SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
+        VALUES (COMM_SEQ.NEXTVAL, SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
 </update>
 
 </mapper>

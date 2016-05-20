@@ -56,7 +56,7 @@ public class BodyCheckController {
 		// ajax 쓸때는 꼭 @ResponseBody 를 사용하고 success를 리턴해준다.!!!!!!!!!!!!!!!!!!!!!!!!!!
 		Map<String, Object> map = new HashMap<String, Object>();
 		log.info("---------> bodyCheckSubmit controller json : "+commandMap.toString());
-		bodyCheckService.inputBodyCheck(commandMap.getMap());
+		bodyCheckService.inputBodyCheck(commandMap);
 		map.put("success", "success");
 		
 		//request.setAttribute("result","success");

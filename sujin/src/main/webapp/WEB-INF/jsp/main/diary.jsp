@@ -47,11 +47,11 @@
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
 			<div class="form-group" >
 				<label for="subject">제목</label>
-				<input type="text" id="subject" class="form-control">
+				<input type="text" id="subject" name="SUBJECT" class="form-control">
 			</div>
 			<div class="form-group">
 				<label for="smarteditor">내용</label>
-				<textarea id="smarteditor" class="form-control" style="width:98%;"></textarea>
+				<textarea id="smarteditor" class="form-control" name="DIARY" style="width:98%;"></textarea>
 				<br/>
 				<input type="button" id="submit_btn" class="btn btn-default" value="저장">
         	</div>
