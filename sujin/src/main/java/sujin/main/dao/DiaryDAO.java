@@ -13,14 +13,16 @@ public class DiaryDAO extends AbstractDAO{
 	Logger log = Logger.getLogger(getClass());
 
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getDiaryList() throws Exception{
+	public List<Map<String, Object>> getDiaryList(Map<String, Object> map) throws Exception{
 		// TODO Auto-generated method stub
-		return selectList("diary.getDiaryList");
+		log.info("********************************************  "+map.get("CNT"));
+		return selectList("diary.getDiaryList", map);
 	}
 
 
 	public void saveDiary(Map<String, Object> map) throws Exception{
 		// TODO Auto-generated method stub
+		
 		selectList("diary.saveDiary", map);
 	}
 	

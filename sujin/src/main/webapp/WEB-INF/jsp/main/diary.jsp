@@ -53,20 +53,33 @@
 				<label for="smarteditor">내용</label>
 				<textarea id="smarteditor" class="form-control" name="DIARY" style="width:98%;"></textarea>
 				<br/>
-				<input type="button" id="submit_btn" class="btn btn-default" value="저장">
+				<input type="button" id="submit_btn" class="btn btn-default btn-block" style="margin-top:10px;" value="저장">
         	</div>
         </form>
       </div>
-
+      
+      <div class="jumbotron" id="diary_contents">
+      	
+      </div><!-- JUMBOTRON -->
+      <div class="jumbotron" >
+	  	<input type="button" id="plus_contents" class="btn btn-primary btn-block" style="margin-top:10px;" value="더보기" >
+      </div><!-- JUMBOTRON -->
     </div> <!-- /container -->
 
 
 
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
+var CNT	     =  0;
+var PAGE_CNT = 50;
+
 $(document).ready(function(){ //alert("docu ready");
+	
+	fnGetDiaryList();
+
     //전역변수선언
+    
     var editor_object = [];
      
     nhn.husky.EZCreator.createInIFrame({
@@ -93,15 +106,13 @@ $(document).ready(function(){ //alert("docu ready");
         //폼 submit
         var subject  = $("#subject")    .val();
         var contents = $("#smarteditor").val();
-        alert("subject="+subject+"contents="+contents);
-        
         
         if(subject == null || subject == "" || contents == null || contents == "<p>&nbsp;</p>"){
         	alert("제목과 내용에 값을 입력핫~쎄용");
         	return;
         }
-        var param    = {subject  : subject, 
-        				contents : contents
+        var param    = {SUBJECT  : subject, 
+        				DIARY    : contents
         };
         //alert("param : "+JSON.stringify(param));
         
@@ -111,7 +122,7 @@ $(document).ready(function(){ //alert("docu ready");
         	url			: "/sujin/main/saveDiary.do",
         	data		: param,
         	success		: function(data){
-        		alert(JSON.stringify(data));
+        		alert("저장됨!");
         	},
         	complete	:function(data){
         		
@@ -122,6 +133,83 @@ $(document).ready(function(){ //alert("docu ready");
         	
         });
     })
+    
+    
+    function fnGetDiaryList(){ //일기 리스트 가져오기 
+    	//alert(CNT);
+    	var param = { CNT  : CNT*PAGE_CNT
+    				 ,CNT1 : (CNT+1)*PAGE_CNT-1  
+    	};
+    	
+    	$.ajax({  
+    		type		: "POST",
+    		url			: "/sujin/main/getDiaryList.do",
+    		dataType	: "JSON",
+    		data		: param,
+    		success		: function(data){
+    			//alert(JSON.stringify(data.result));
+    			/* 
+    			<div class="list_wrap" id="list_wrap">
+	          		<div class="form-group">
+	    		    	<label for="writer" class="control-label">작성자</label>
+	    		    	<input type="text" class="form-control" name="WRITER" id="writer" readonly>
+	    		    	<label for="reg_dt" class="control-label">등록일</label>
+	    		    	<input type="text" class="form-control" name="REG_DT" id="reg_dt" readonly>
+	    			</div>
+	          		<div class="form-group">
+	    			    <label for="subject" class="control-label">제목</label>
+	    				<input type="text" class="form-control" name="SUBJECT" id="subject" readonly>
+	    			</div>
+	          		<div class="form-group">
+	    			    <label for="contents" class="control-label">내용</label>
+	    			    <textarea class="form-control" name="DIARY" id="contents" readonly></textarea>
+	    			</div>
+	    			<input type="hidden" name="DIAY_NO" value="">
+	          	</div>
+    			 */
+    			 var html = "";
+    			 
+    			 if(data.result.length == 0){ 
+    				 $("#plus_contents").attr("disabled", true);
+    				 $("#plus_contents").val("더이상 불러올 수 없습니다.");
+    			 }
+    			 
+    			 $.each(data.result, function(idx, obj){
+    				html+=" <div class=\"list_wrap\" id=\"list_wrap\">                                              						";
+	 	          	html+="	<div class=\"form-group\">                                                            							";
+	 	    		html+="    	<label for=\"writer\" class=\"control-label\">작성자</label>                        						";
+	 	    		html+="    	<input type=\"text\" class=\"form-control\" name=\"WRITER\" id=\"writer\" value="+obj.WRITER+" readonly>	";
+	 	    		html+="    	<label for=\"reg_dt\" class=\"control-label\">등록일</label>                        						";
+	 	    		html+="    	<input type=\"text\" class=\"form-control\" name=\"REG_DT\" id=\"reg_dt\" value="+obj.REG_DT+" readonly>	";
+	 	    		html+="	</div>                                                                              							";
+	 	          	html+="	<div class=\"form-group\">                                                            							";
+	 	    		html+="	    <label for=\"subject\" class=\"control-label\">제목</label>                         						";
+	 	    		html+="		<input type=\"text\" class=\"form-control\" name=\"SUBJECT\" id=\"subject\" value="+obj.SUBJECT+" readonly> ";
+	 	    		html+="	</div>                                                                              							";
+	 	          	html+="	<div id=\"contents\" class=\"contents\">                                                     					";
+	 	    		html+=  	obj.DIARY																									 ; 
+	 	    		html+="	</div>                                                                              							";
+	 	    		html+="	<input type=\"hidden\" name=\"DIAY_NO\" value="+obj.DIARY_NO+">                                       			";
+	 	          	html+="</div>                                                                               							";
+    				 
+    			 });
+    			 
+    			 $("#diary_contents").append(html);
+    		},
+    		error		: function(xhr, status, error){
+    			alert(error);
+    		}
+    	});
+    }
+    
+    /* 더보기 버튼 클릭시 */
+    $("#plus_contents").click(function(){
+    	CNT++;
+    	fnGetDiaryList();
+    });
+    
+    
+    
 })
 
 </script>

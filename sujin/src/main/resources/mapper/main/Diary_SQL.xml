@@ -4,22 +4,27 @@
 
 
 <select id="getDiaryList" parameterType="hashmap" resultType="hashmap">
-	SELECT BASIC.DIARY_NO
-		  ,BASIC.WRITER
-		  ,BASIC.SUBJECT
-		  ,BASIC.DIARY
-		  ,BASIC.REG_DT
-	  FROM DIARY BASIC
-  ORDER BY REG_DT 
+	SELECT * FROM (
+					SELECT ROWNUM RNO
+						  ,BASIC.DIARY_NO
+						  ,(SELECT USER_NM FROM USER_INFO WHERE USER_ID = BASIC.WRITER) AS WRITER
+						  ,BASIC.SUBJECT
+						  ,BASIC.DIARY
+						  ,TO_CHAR(BASIC.REG_DT, 'YYYY-MM-DD hh24:mi:ss') AS REG_DT
+					  FROM DIARY BASIC
+				  ORDER BY DIARY_NO DESC
+	  )
+     WHERE RNO BETWEEN #{CNT} AND #{CNT1}
+  ORDER BY DIARY_NO DESC 
 </select>
 
 <update id="saveDiary" parameterType="hashmap">
 	MERGE INTO DIARY TARGET
-	     USING (SELECT  '${DIARY_NO}' AS DIARY_NO
-	                   ,'${WRITER  }' AS WRITER
-	                   ,'${SUBJECT }' AS SUBJECT
-	                   ,'${DIARY   }' AS DIARY
-	                   ,SYSDATE     AS REG_DT
+	     USING (SELECT  TO_CHAR(SYSDATE, 'YYYYMMDD') AS DIARY_NO
+	                   ,'${WRITER  }' 				 AS WRITER
+	                   ,'${SUBJECT }' 				 AS SUBJECT
+	                   ,'${DIARY   }' 				 AS DIARY
+	                   ,SYSDATE     				 AS REG_DT
 	     		  FROM DUAL
 	     		) SOURCE
 	        ON (TARGET.DIARY_NO = SOURCE.DIARY_NO)
@@ -31,7 +36,7 @@
                TARGET.REG_DT  = SOURCE.REG_DT
     WHEN NOT MATCHED THEN
         INSERT (TARGET.DIARY_NO,  TARGET.WRITER, TARGET.SUBJECT, TARGET.DIARY, TARGET.REG_DT)
-        VALUES (COMM_SEQ.NEXTVAL, SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
+        VALUES (SOURCE.DIARY_NO,  SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
 </update>
 
 </mapper>

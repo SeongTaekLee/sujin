@@ -15,10 +15,36 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 		
 		try {
 			
-			if (request.getSession().getAttribute("user") == null && request.getRequestURI().contains("/login.do") )  {
+			/*if (request.getSession().getAttribute("user") == null && request.getRequestURI().contains("/login.do") )  {
 				log.info("===== 최초 로그인 시,  URI : "+request.getRequestURI());
 				return true;
+				
+			}*/
+			
+			if(request.getSession().getAttribute("user") != null){
+				
+				if(request.getRequestURI().contains("/login.do")){ //세션있고 로그인 페이지 이동
+					log.info("========================= 세션있고 로그인 페이지 이동");
+					response.sendRedirect("/sujin/main/bodyCheck.do");
+					return false;
+				}else{ //세션있고 기타 페이지 이동
+					log.info("========================= 세션 있고 기타페이지 이동");
+					return true;
+				}
+				
+			}else{ 
+				
+				if(request.getRequestURI().contains("/submitLogin.do") || request.getRequestURI().contains("/login.do")){
+					log.info("========================= 세션 없고 로그인페이지 이동");
+					return true;
+				}else{
+					log.info("========================= 세션 없고 기타페이지 이동");
+					response.sendRedirect("/sujin/main/login.do");
+					return false;
+				}
+				
 			}
+			
 			
 			
 		} catch (Exception e) {
@@ -30,7 +56,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 	
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
+		
 		super.postHandle(request, response, handler, modelAndView);
 	}
 }

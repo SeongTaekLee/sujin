@@ -105,9 +105,20 @@ hr {
 }
 
 
+.list_wrap{
+	margin-top : 20px;
+	padding : 20px;
+	border: 2px solid #ddd;
+	border-radius : 10px;
+	height:auto;
+}
 
-
-
+.contents{
+	border: 2px solid #ddd;
+	border-radius : 10px;
+	height:auto;
+	padding : 30px;
+}
 
 
 

@@ -8,9 +8,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import sujin.common.common.CommandMap;
 import sujin.common.vo.UserVO;
 import sujin.main.service.LoginService;
 
@@ -21,15 +21,13 @@ public class LoginController {
 	@Resource(name="loginService")
 	private LoginService loginService;
     
-	
-	/*@RequestMapping(value="/main/loginPage.do")
+	@RequestMapping(value="/main/loginPage.do")
 	public String loginPage() throws Exception{
-		log.info("===== loginPage Controller ");
 		return "/main/login";
-	}*/
+	}
 	
     @RequestMapping(value="/main/login.do")
-    public String login(CommandMap commandMap, HttpSession session) throws Exception{ 
+    public String login(@RequestParam Map commandMap, HttpSession session) throws Exception{ 
     	
     	log.info("===== login Controller commandMap : "+commandMap.toString());
     	String uri = "/main/login";
@@ -51,17 +49,18 @@ public class LoginController {
     }
     
     @RequestMapping(value="/main/submitLogin")
-    public ModelAndView submitLogin(CommandMap commandMap, HttpSession session) throws Exception{
+    public ModelAndView submitLogin(@RequestParam Map commandMap, HttpSession session) throws Exception{
     	ModelAndView mv = new ModelAndView();
     	
     	UserVO user = new UserVO();
     	String uri = "/main/login";
     	String loginFlag = "fail";
-    	if ( commandMap.isEmpty() ) {
+    	log.info("@@@ "+commandMap);
+    	if ( commandMap == null) {
     		loginFlag = "none";
     		//uri = "/main/login";
     	}else { 
-    		Map<String, Object> map = loginService.checkUser(commandMap.getMap());
+    		Map<String, Object> map = loginService.checkUser(commandMap);
     		log.info(map.toString());
     		if( "1".equals( map.get("CHECK_USER").toString() ) ){
     			loginFlag = "sucess";

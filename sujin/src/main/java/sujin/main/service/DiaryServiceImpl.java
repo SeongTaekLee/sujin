@@ -18,9 +18,9 @@ public class DiaryServiceImpl implements DiaryService{
 	private DiaryDAO diaryDAO;
 	
 	@Override
-	public List<Map<String, Object>> getDiaryList() throws Exception {
+	public List<Map<String, Object>> getDiaryList(Map<String, Object> map) throws Exception {
 		// TODO Auto-generated method stub
-		return diaryDAO.getDiaryList();
+		return diaryDAO.getDiaryList(map);
 	}
 	
 	@Override

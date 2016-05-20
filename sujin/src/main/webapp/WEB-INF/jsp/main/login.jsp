@@ -35,7 +35,7 @@
 		if(loginFlag == "loginFail"){
 			alert("아이디 또는 비밀번호가 맞지않습니다.");
 		}
-		if(loginFlag == "sucess"){ alert("loginFlag : "+loginFlag);
+		if(loginFlag == "sucess"){ 
 			window.location = "/sujin/main/bodyCheck.do";
 		}
 		
