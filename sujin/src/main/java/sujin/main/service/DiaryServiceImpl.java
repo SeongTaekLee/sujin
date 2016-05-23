@@ -28,4 +28,10 @@ public class DiaryServiceImpl implements DiaryService{
 		// TODO Auto-generated method stub
 		diaryDAO.saveDiary(map);
 	}
+	
+	@Override
+	public void delDiary(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		diaryDAO.delDiary(map);
+	}
 }

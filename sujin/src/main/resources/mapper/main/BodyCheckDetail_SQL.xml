@@ -6,7 +6,6 @@
      <select id="selectBodyCheckDetail" parameterType="hashmap" resultType="hashmap">
      <![CDATA[ 
      	SELECT CHECK_NO
-		              --,SUBSTR(CHECK_NO, 0, 4) || '년' || SUBSTR(CHECK_NO, 5, 2) || '월' || SUBSTR(CHECK_NO, 7, 2) || '일'   AS CHECK_NO_DATE
 		              ,TO_CHAR(TO_DATE( CHECK_NO, 'YYYYMMDD' ), 'YYYY"년"MM"월"DD"일"') AS CHECK_NO_DATE
 		        	  ,B001
 		        	  ,B002
@@ -16,7 +15,8 @@
 		        	  ,B006
 		        	  ,B007
 		        	  ,B008
-		        	  --,SUBSTR(REG_DT, 10, 2) || ':' || SUBSTR(REG_DT, 12, 2) || ':' || SUBSTR(REG_DT, 14, 2) AS REG_DT
+		        	  ,(B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008)    AS SUM
+		        	  ,ROUND((B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008)/8 , 2)  AS AVG
 		        	  ,NVL( TO_CHAR(  REG_DT, 'hh:mm:ss' ), 'NO TIME' ) AS REG_DT
 		        	  ,NVL(RMK, ' ') AS RMK
 		          FROM BODY_CHECK_LIST
@@ -31,7 +31,6 @@
      	SELECT BODY_KOR
      	  FROM BODY_CHECK_LIST_MAP
       ORDER BY BODY_CD 
-     
      </select>
      
 </mapper>

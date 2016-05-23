@@ -62,6 +62,8 @@
 				<col width="5%"/>
 				<col width="5%"/> <!-- B008 -->
 				<col width="5%"/>
+				<col width="5%"/>
+				<col width="5%"/>
 				<col width="15%"/>
 			</colgroup>
 			<thead>
@@ -136,6 +138,8 @@
 					$.each(data.thList, function(idx, obj){ 
 						thList += "<th scope=\"col\" style=\"text-align:center\" > "+obj.BODY_KOR+"	</th>";
 					});
+					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 합계 				</th>";
+					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 평균	 			</th>";
 					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 등록시간 			</th>";
 					thList	+= "<th scope=\"col\" style=\"text-align:center\" > 비고    			</th>";
 				}else{
@@ -144,21 +148,23 @@
 				$("#result_th").html(thList);
 				
 				var html = "";
-				if(data.result.length > 0){
-					$.each(data.result, function(idx, obj){
-						html += "<tr>"					   ;
-						html += "<td>"+obj.CHECK_NO_DATE+"</td>";
-						html += "<td>"+obj.B001+"</td>"    ;
-						html += "<td>"+obj.B002+"</td>"    ;
-						html += "<td>"+obj.B003+"</td>"    ;
-						html += "<td>"+obj.B004+"</td>"    ;
-						html += "<td>"+obj.B005+"</td>"    ;
-						html += "<td>"+obj.B006+"</td>"    ;
-						html += "<td>"+obj.B007+"</td>"    ;
-						html += "<td>"+obj.B008+"</td>"    ;
-						html += "<td>"+obj.REG_DT+"</td>"  ;
-						html += "<td>"+obj.RMK+"</td>"     ;
-						html += "</tr>"					   ;
+				if(data.result.length > 0){ 
+					$.each(data.result, function(idx, obj){ 
+						html += "<tr>"					   					;
+						html += "<td>"+obj.CHECK_NO_DATE+"</td>"			;
+						html += "<td class=\"tb_val\">"+obj.B001+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B002+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B003+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B004+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B005+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B006+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B007+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B008+"</td>"    ;
+						html += "<td>"+obj.SUM+"</td>" 				 		;
+						html += "<td>"+obj.AVG+"</td>" 				 		;
+						html += "<td>"+obj.REG_DT+"</td>" 				 	;
+						html += "<td>"+obj.RMK+"</td>"     					;
+						html += "</tr>"					   					;
 					});
 				}else{
 					html += "<tr><td style=\"  text-align:center;  \" colspan=\"11\"> 조회된 결과값이 없습니다. </td></tr>";
@@ -170,7 +176,11 @@
 				alert(" status : "+status+"  error: "+ error);
 			},
 			complete : function(data){
-				
+				$(".tb_val:contains('1')").css("color", "#eb0000");
+				$(".tb_val:contains('2')").css("color", "#ff8200");
+				$(".tb_val:contains('3')").css("color", "#282828");
+				$(".tb_val:contains('4')").css("color", "#228b22");
+				$(".tb_val:contains('5')").css("color", "#0000ff");
 			}
 			
 			

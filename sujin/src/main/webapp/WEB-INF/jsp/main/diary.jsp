@@ -44,14 +44,16 @@
         <h2>Diary</h2>
         <br/>
         
+		
 		<form action="/sujin/main/bodyCheckSubmit.do" method="post">
 			<div class="form-group" >
 				<label for="subject">제목</label>
 				<input type="text" id="subject" name="SUBJECT" class="form-control">
 			</div>
 			<div class="form-group">
-				<label for="smarteditor">내용</label>
-				<textarea id="smarteditor" class="form-control" name="DIARY" style="width:98%;"></textarea>
+				<label for="editor">내용</label>
+				<textarea id="editor" class="form-control" name="DIARY" style="width:98%;"></textarea>
+				
 				<br/>
 				<input type="button" id="submit_btn" class="btn btn-default btn-block" style="margin-top:10px;" value="저장">
         	</div>
@@ -61,6 +63,8 @@
       <div class="jumbotron" id="diary_contents">
       	
       </div><!-- JUMBOTRON -->
+      
+      
       <div class="jumbotron" >
 	  	<input type="button" id="plus_contents" class="btn btn-primary btn-block" style="margin-top:10px;" value="더보기" >
       </div><!-- JUMBOTRON -->
@@ -79,9 +83,10 @@ $(document).ready(function(){ //alert("docu ready");
 	fnGetDiaryList();
 
     //전역변수선언
-    
+	//naver smart editor --
+	/* 
     var editor_object = [];
-     
+    
     nhn.husky.EZCreator.createInIFrame({
         oAppRef: editor_object,
         elPlaceHolder: "smarteditor",
@@ -132,11 +137,71 @@ $(document).ready(function(){ //alert("docu ready");
         	}
         	
         });
-    })
+    }) */
+    /* 
+    ['Source','-','Save','NewPage','Preview','-','Templates'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+    '/',
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+    ['Link','Unlink','Anchor'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+    '/',
+    ['Styles','Format','Font','FontSize'],
+    ['TextColor','BGColor'],
+    ['Maximize', 'ShowBlocks','-','About'] */
+    
+    
+    // [ ck editor ]
+    //CKEDITOR.replace("editor");
+    CKEDITOR.replace("editor", {
+    	
+    	toolbar: 
+    	[
+    		["Undo", "Redo", "Bold", "Italic", "Underline", "Styles", "Format", "Font", "FontSize", "TextColor", "BGColor"]		  
+    	]
+    	
+    });
+    
+    $("#submit_btn").click(function(){
+    	var contents = CKEDITOR.instances.editor.getData();
+    	var subject  = $("#subject").val();
+    	if(subject == null || subject == "" || contents == null || contents == ""){
+        	alert("제목과 내용에 값을 입력핫~쎄용");
+        	return;
+        }
+    	
+    	var param    = {SUBJECT  : subject, 
+						DIARY    : contents
+		};
+    	$.ajax({  
+        	type		: "POST",
+        	dataType	: "JSON",
+        	url			: "/sujin/main/saveDiary.do",
+        	data		: param,
+        	success		: function(data){
+        		alert("저장됨!");
+        		
+        		$("#diary_contents").html("");
+        		fnGetDiaryList();
+        	},
+        	complete	:function(data){
+        		
+        	},
+        	error		:function(xhr, status, error){
+        		alert(status);
+        	}
+        	
+        });
+
+    });
     
     
     function fnGetDiaryList(){ //일기 리스트 가져오기 
-    	//alert(CNT);
+    	
     	var param = { CNT  : CNT*PAGE_CNT
     				 ,CNT1 : (CNT+1)*PAGE_CNT-1  
     	};
@@ -164,7 +229,11 @@ $(document).ready(function(){ //alert("docu ready");
 	    			    <label for="contents" class="control-label">내용</label>
 	    			    <textarea class="form-control" name="DIARY" id="contents" readonly></textarea>
 	    			</div>
-	    			<input type="hidden" name="DIAY_NO" value="">
+	    			<div class="form-group">
+	    				<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+		    			<input type="hidden" name="DIAY_NO" value="">
+	    			</div>
+	    			
 	          	</div>
     			 */
     			 var html = "";
@@ -179,6 +248,8 @@ $(document).ready(function(){ //alert("docu ready");
 	 	          	html+="	<div class=\"form-group\">                                                            							";
 	 	    		html+="    	<label for=\"writer\" class=\"control-label\">작성자</label>                        						";
 	 	    		html+="    	<input type=\"text\" class=\"form-control\" name=\"WRITER\" id=\"writer\" value="+obj.WRITER+" readonly>	";
+	 	    		html+="	</div>                                                                              							";
+	 	          	html+="	<div class=\"form-group\">                                                            							";
 	 	    		html+="    	<label for=\"reg_dt\" class=\"control-label\">등록일</label>                        						";
 	 	    		html+="    	<input type=\"text\" class=\"form-control\" name=\"REG_DT\" id=\"reg_dt\" value="+obj.REG_DT+" readonly>	";
 	 	    		html+="	</div>                                                                              							";
@@ -189,15 +260,28 @@ $(document).ready(function(){ //alert("docu ready");
 	 	          	html+="	<div id=\"contents\" class=\"contents\">                                                     					";
 	 	    		html+=  	obj.DIARY																									 ; 
 	 	    		html+="	</div>                                                                              							";
-	 	    		html+="	<input type=\"hidden\" name=\"DIAY_NO\" value="+obj.DIARY_NO+">                                       			";
-	 	          	html+="</div>                                                                               							";
+	 	    		
+	 	    		html+="<button class=\"btn btn-default btn-xs btn-del\" id="+obj.DIARY_NO+" style=\"margin-top:10px;\">"; 
+	 	    		html+="  <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> 삭제    								"; 
+	 	    		html+="</button>                                                                      									"; 
+	 	    		
+			 	 	html+="</div>																											";
+	 	          	//html+="</div>                                                                               							";
     				 
     			 });
     			 
     			 $("#diary_contents").append(html);
+    			 
+    			 /* 삭제버튼 클릭시 */
+     		    $("button").click(function(){
+     		    	fnDelArticle(this.id);
+     		    });
     		},
     		error		: function(xhr, status, error){
     			alert(error);
+    		},
+    		complete	: function(date){
+    			
     		}
     	});
     }
@@ -208,6 +292,32 @@ $(document).ready(function(){ //alert("docu ready");
     	fnGetDiaryList();
     });
     
+    function fnDelArticle(val){
+    	
+    	if(val != null){ //값있어야 실행
+    		
+    		var param = {DIARY_NO : val};
+        	$.ajax({
+        		data	: "POST",
+        		dataType : "JSON",
+        		url		: "/sujin/main/delArticle.do",
+        		data	: param,
+        		success : function(data){
+        			//alert("삭제완료");
+        			var diaryNo = data.DIARY_NO;
+        			$("#"+diaryNo).parent().html("")  ;
+        			
+        		},
+        		error	: function(data){
+        			alert("삭제실패. 재도전해주삼");
+        		}
+        		
+        		
+        	});
+    		
+    	}
+    	
+    }
     
     
 })

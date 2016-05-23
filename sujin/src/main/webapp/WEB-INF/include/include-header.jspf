@@ -8,10 +8,13 @@
 <link rel="stylesheet" href="/sujin/css/bootstrap.css">
 
 <!-- 부가적인 테마 -->
-<link rel="stylesheet" href="/sujin/css/bootstrap-theme.css">
+<!-- <link rel="stylesheet" href="/sujin/css/bootstrap-theme.css"> -->
 
 <!-- 커스텀 CSS -->
 <link rel="stylesheet" href="/sujin/css/sujin.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ck editor -->
+<script type="text/javascript" src="/sujin/ckeditor/ckeditor.js"></script>
 
 <title>home</title>

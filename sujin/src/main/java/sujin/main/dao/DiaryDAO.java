@@ -25,6 +25,12 @@ public class DiaryDAO extends AbstractDAO{
 		
 		selectList("diary.saveDiary", map);
 	}
+
+
+	public void delDiary(Map<String, Object> map) throws Exception{
+		// TODO Auto-generated method stub
+		delete("diary.delDiary", map);
+	}
 	
 	
 }

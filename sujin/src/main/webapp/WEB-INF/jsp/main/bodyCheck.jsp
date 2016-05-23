@@ -233,6 +233,8 @@
           subtitle: 'Daily'
         },
         width:  $(".jumbotron").first().width(),
+        //width: 500,
+        height: 300,
 
         axes: {
           x: {

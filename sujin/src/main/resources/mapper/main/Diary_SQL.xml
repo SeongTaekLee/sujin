@@ -39,4 +39,9 @@
         VALUES (SOURCE.DIARY_NO,  SOURCE.WRITER, SOURCE.SUBJECT, SOURCE.DIARY, SOURCE.REG_DT)
 </update>
 
+<delete id="delDiary" parameterType="hashmap">
+	DELETE FROM DIARY
+	      WHERE DIARY_NO = '${DIARY_NO}'
+</delete>
+
 </mapper>
