@@ -61,6 +61,7 @@
 				<col width="5%"/>
 				<col width="5%"/>
 				<col width="5%"/> <!-- B008 -->
+				<col width="5%"/> <!-- B009 -->
 				<col width="5%"/>
 				<col width="5%"/>
 				<col width="5%"/>
@@ -77,6 +78,7 @@
 					<th scope="col"> 배<br>(대장)	</th>
 					<th scope="col"> 다리			</th>
 					<th scope="col"> 팔				</th>
+					<th scope="col"> 멘탈			</th>
 					<th scope="col"> 등록시간 		</th>
 					<th scope="col"> 비고			</th> -->
 				</tr>
@@ -160,6 +162,7 @@
 						html += "<td class=\"tb_val\">"+obj.B006+"</td>"    ;
 						html += "<td class=\"tb_val\">"+obj.B007+"</td>"    ;
 						html += "<td class=\"tb_val\">"+obj.B008+"</td>"    ;
+						html += "<td class=\"tb_val\">"+obj.B009+"</td>"    ;
 						html += "<td>"+obj.SUM+"</td>" 				 		;
 						html += "<td>"+obj.AVG+"</td>" 				 		;
 						html += "<td>"+obj.REG_DT+"</td>" 				 	;

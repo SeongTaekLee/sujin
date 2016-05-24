@@ -6,23 +6,23 @@
      <select id="selectBodyCheckDetail" parameterType="hashmap" resultType="hashmap">
      <![CDATA[ 
      	SELECT CHECK_NO
-		              ,TO_CHAR(TO_DATE( CHECK_NO, 'YYYYMMDD' ), 'YYYY"년"MM"월"DD"일"') AS CHECK_NO_DATE
-		        	  ,B001
-		        	  ,B002
-		        	  ,B003
-		        	  ,B004
-		        	  ,B005
-		        	  ,B006
-		        	  ,B007
-		        	  ,B008
-		        	  ,(B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008)    AS SUM
-		        	  ,ROUND((B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008)/8 , 2)  AS AVG
-		        	  ,NVL( TO_CHAR(  REG_DT, 'hh:mm:ss' ), 'NO TIME' ) AS REG_DT
-		        	  ,NVL(RMK, ' ') AS RMK
-		          FROM BODY_CHECK_LIST
-		         WHERE ROWNUM <= 100
-		           --AND B001 = '99'
-		      ORDER BY CHECK_NO DESC
+              ,TO_CHAR(TO_DATE( CHECK_NO, 'YYYYMMDD' ), 'YYYY"년"MM"월"DD"일"') AS CHECK_NO_DATE
+        	  ,B001
+        	  ,B002
+        	  ,B003
+        	  ,B004
+        	  ,B005
+        	  ,B006
+        	  ,B007
+        	  ,B008
+        	  ,B009
+        	  ,(B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008 + B009)    AS SUM
+        	  ,ROUND((B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008 + B009)/8 , 2)  AS AVG
+        	  ,NVL( TO_CHAR(  REG_DT, 'hh:mm:ss' ), 'NO TIME' ) AS REG_DT
+        	  ,NVL(RMK, ' ') AS RMK
+          FROM BODY_CHECK_LIST
+         WHERE ROWNUM <= 100
+      ORDER BY CHECK_NO DESC
      ]]> 
         
      </select>

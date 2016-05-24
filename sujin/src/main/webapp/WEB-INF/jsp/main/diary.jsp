@@ -76,7 +76,7 @@
 
 <script type="text/javascript"> 
 var CNT	     =  0;
-var PAGE_CNT = 50;
+var PAGE_CNT = 10;
 
 $(document).ready(function(){ //alert("docu ready");
 	

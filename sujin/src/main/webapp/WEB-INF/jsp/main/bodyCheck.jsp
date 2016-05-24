@@ -44,17 +44,13 @@
 	  <div class="jumbotron">
 		<h2>차트</h2>
 		<div class="dateTypeBtnWrap">
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataD" value="daily"   >
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataW" value="weekly"  >
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataM" value="monthly" >
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataPie" value="PieChart" >
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataBar" value="BarChart" >
-			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataLine" value="LineChart" >
+			<input type="button" class="btn btn-default btn-xs clickChartData active" name="clickChartDataD" value="daily"   >
+			<input type="button" class="btn btn-default btn-xs clickChartData" 		  name="clickChartDataW" value="weekly"  >
+			<input type="button" class="btn btn-default btn-xs clickChartData" 		  name="clickChartDataM" value="monthly" >
+			<input type="button" class="btn btn-default btn-xs clickChartData active" name="clickChartDataPie" value="PieChart" >
+			<input type="button" class="btn btn-default btn-xs clickChartData" 		  name="clickChartDataBar" value="BarChart" >
+			<input type="button" class="btn btn-default btn-xs clickChartData" 		  name="clickChartDataLine" value="LineChart" >
 		</div>
-		<div id = "checkVal"> </div>
-		<!-- <div id="googleChartArea">
-		
-		</div> -->
 		<div id="chart_div"    class="googleChart" style="border: 1px solid #cccl; visibility:visible;" ></div>
 	  </div>
 	  
@@ -86,26 +82,51 @@
 		//fnGetChartData();
 		
 		$(":input[name=clickChartDataD]").click(function(){
-			dateType = "daily"; 
+			dateType = "daily";
+			$(":input[name=clickChartDataD]").removeClass("active");
+			$(":input[name=clickChartDataW]").removeClass("active");
+			$(":input[name=clickChartDataM]").removeClass("active");
+			$(":input[name=clickChartDataD]").addClass("active");
 			fnGetChartData();
+			
 		}); 
 		$(":input[name=clickChartDataW]").click(function(){
+			$(":input[name=clickChartDataD]").removeClass("active");
+			$(":input[name=clickChartDataW]").removeClass("active");
+			$(":input[name=clickChartDataM]").removeClass("active");
+			$(":input[name=clickChartDataW]").addClass("active");
 			dateType = "weekly"; 
 			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataM]").click(function(){
+			$(":input[name=clickChartDataD]").removeClass("active");
+			$(":input[name=clickChartDataW]").removeClass("active");
+			$(":input[name=clickChartDataM]").removeClass("active");
+			$(":input[name=clickChartDataM]").addClass("active");
 			dateType = "monthly"; 
 			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataPie]").click(function(){
+			$(":input[name=clickChartDataPie]" ).removeClass("active");
+			$(":input[name=clickChartDataBar]" ).removeClass("active");
+			$(":input[name=clickChartDataLine]").removeClass("active");
+			$(":input[name=clickChartDataPie]" ).addClass("active");
 			chartType = "pie";
 			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataBar]").click(function(){
+			$(":input[name=clickChartDataPie]" ).removeClass("active");
+			$(":input[name=clickChartDataBar]" ).removeClass("active");
+			$(":input[name=clickChartDataLine]").removeClass("active");
+			$(":input[name=clickChartDataBar]" ).addClass("active");
 			chartType = "bar";
 			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataLine]").click(function(){
+			$(":input[name=clickChartDataPie]" ).removeClass("active");
+			$(":input[name=clickChartDataBar]" ).removeClass("active");
+			$(":input[name=clickChartDataLine]").removeClass("active");
+			$(":input[name=clickChartDataLine]" ).addClass("active");
 			chartType = "line";
 			fnGetChartData();
 		}); 
@@ -189,6 +210,7 @@
 			$(".ABDOMEN")	.find("[name=B006]").val(data.todayValue[0].B006);
 			$(".LEG")		.find("[name=B007]").val(data.todayValue[0].B007);
 			$(".ARM")		.find("[name=B008]").val(data.todayValue[0].B008);
+			$(".MENTAL")	.find("[name=B009]").val(data.todayValue[0].B009);
 			$("textarea[name=RMK]").val(data.todayValue[0].RMK);
 		}
 	}
@@ -202,6 +224,7 @@
 					 B006 : $("select[name=B006]").val() ,
 					 B007 : $("select[name=B007]").val() ,
 					 B008 : $("select[name=B008]").val() ,
+					 B009 : $("select[name=B009]").val() ,
 					 RMK  : $("textarea[name=RMK]").val()
 		};
 	
@@ -249,14 +272,14 @@
           
 			var piechart_options = {title:  '아픈 부분 비율',
 				 		  		    width:  $(".jumbotron").first().width(),
-				                   height:  300};
+				                   height:  350};
 			var piechart = new google.visualization.PieChart(document.getElementById('chart_div'));
 			piechart.draw(data, piechart_options);
       }else if(chartType == 'bar'){ 
     	  var title = "";
     	       if(dateType == 'daily'  ) title = '오늘의 상태 바 그래프';
-    	  else if(dataType == 'weekly' ) title = '주단위 상태 바 그래프';
-    	  else if(dataType == 'monthly') title = '월단위 상태 바 그래프';
+    	  else if(dateType == 'weekly' ) title = '주단위 상태 바 그래프';
+    	  else if(dateType == 'monthly') title = '월단위 상태 바 그래프';
     	  
     	  var data = new google.visualization.DataTable();
           data.addColumn('string', '신체');
@@ -272,7 +295,7 @@
           
 			var barchart_options = {title:  title,
 						  		    width:  $(".jumbotron").first().width(),
-				                   height:  300,
+				                   height:  350,
 				                   legend: 'none'};
 			var barchart = new google.visualization.BarChart(document.getElementById('chart_div'));
 			barchart.draw(data, barchart_options);
@@ -285,7 +308,7 @@
 
           var linechart_options = {title: '평균치 꺾은선 그래프',
 						           width:  $(".jumbotron").first().width(),
-						          height: 300,
+						          height: 350,
 
             axes: {x: { 0: {side: 'top'} }
             }
@@ -342,6 +365,7 @@
 					chartDataArr.push(new Array( "배"		, data.chartData[0].B006 ));
 					chartDataArr.push(new Array( "다리"		, data.chartData[0].B007 ));
 					chartDataArr.push(new Array( "팔"		, data.chartData[0].B008 ));
+					chartDataArr.push(new Array( "멘탈"		, data.chartData[0].B009 ));
 				}else if(chartType == "bar"){
 					chartDataArr.push(new Array( "머리"		, data.chartData[0].B001 ));
 					chartDataArr.push(new Array( "어깨(좌)"	, data.chartData[0].B002 ));
@@ -351,6 +375,7 @@
 					chartDataArr.push(new Array( "배"		, data.chartData[0].B006 ));
 					chartDataArr.push(new Array( "다리"		, data.chartData[0].B007 ));
 					chartDataArr.push(new Array( "팔"		, data.chartData[0].B008 ));
+					chartDataArr.push(new Array( "멘탈"		, data.chartData[0].B009 ));
 					
 				}else if(chartType == "line"){
 					$.each(data.chartData, function(idx, obj){ 
