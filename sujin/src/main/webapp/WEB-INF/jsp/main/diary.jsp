@@ -18,14 +18,16 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/sujin/main/login.do">건강상태 확인</a>
+            <a class="navbar-brand" href="/sujin/main/login.do">메인</a>
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="/sujin/main/bodyCheck.do">건강상태입력</a></li>
-              <li><a href="/sujin/main/bodyCheckDetail.do">건강상태상세</a></li>
+              <li class="active"><a href="/sujin/main/bodyCheck.do">건강상태</a></li>
+              <li><a href="/sujin/main/food.do">음식</a></li>
+              <li><a href="/sujin/main/coffee.do">커피</a></li>
               <li class="active"><a href="/sujin/main/diary.do">일기</a></li>
             </ul>
 

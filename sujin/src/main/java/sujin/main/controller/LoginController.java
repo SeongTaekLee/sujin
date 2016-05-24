@@ -35,7 +35,7 @@ public class LoginController {
     	try {
     		
     		if( session.getAttribute("user") != null ) {
-    			uri = "/main/bodyCheck";
+    			uri = "/main/sujinMain";
     		} else {
     			uri = "/main/login";
     		} 

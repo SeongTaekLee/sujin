@@ -25,7 +25,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 				
 				if(request.getRequestURI().contains("/login.do")){ //세션있고 로그인 페이지 이동
 					log.info("========================= 세션있고 로그인 페이지 이동");
-					response.sendRedirect("/sujin/main/bodyCheck.do");
+					response.sendRedirect("/sujin/main/sujinMain.do");
 					return false;
 				}else{ //세션있고 기타 페이지 이동
 					log.info("========================= 세션 있고 기타페이지 이동");

@@ -43,11 +43,15 @@ public class BodyCheckServiceImpl implements BodyCheckService{
 	}
 	
 	@Override
-	public List<Map<String, Object>> getChartData(Map<String, Object> map) throws Exception {
+	public List<Map<String, Object>> selectBodyCheckDetail() throws Exception {
 		// TODO Auto-generated method stub
-		
-		return bodyCheckDAO.getChartData(map);
+		return bodyCheckDAO.selectBodyCheckDetail();
 	}
 	
+	@Override
+	public List<Map<String, Object>> getThList() throws Exception {
+		// TODO Auto-generated method stub
+		return bodyCheckDAO.getThList();
+	}
 	
 }

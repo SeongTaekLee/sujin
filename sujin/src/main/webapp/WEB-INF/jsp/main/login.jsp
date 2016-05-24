@@ -36,7 +36,7 @@
 			alert("아이디 또는 비밀번호가 맞지않습니다.");
 		}
 		if(loginFlag == "sucess"){ 
-			window.location = "/sujin/main/bodyCheck.do";
+			window.location = "/sujin/main/sujinMain.do";
 		}
 		
 		//alert(navigator.language);

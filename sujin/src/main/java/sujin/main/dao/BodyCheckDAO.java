@@ -35,20 +35,17 @@ public class BodyCheckDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return selectList("bodyCheck.getTodayValue");
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getChartData(Map<String, Object> map) {
-		// TODO Auto-generated method stub
+	public List<Map<String, Object>> selectBodyCheckDetail() throws Exception{
 		
-		if     ("pie" .equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getPieChartData",  map);
-		else if("bar" .equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getBarChartData",  map);
-		else if("line".equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getLineChartData", map);
-		
-		
-		return selectList("bodyCheck.getPieChartData", map);
+		return selectList("bodyCheck.selectBodyCheckDetail");
 		
 	}
-
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getThList() throws Exception{
+		// TODO Auto-generated method stub
+		return selectList("bodyCheck.getThList");
+	}
 }

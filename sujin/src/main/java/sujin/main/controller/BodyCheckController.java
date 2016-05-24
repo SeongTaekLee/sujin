@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -70,32 +69,30 @@ public class BodyCheckController {
 	@RequestMapping(value="/main/getTodayValue.do")
 	@ResponseBody
 	public Map<String, Object> getTodayValue() throws Exception{
+		
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		List<Map<String, Object>> list = bodyCheckService.getTodayValue();
 		
 		map.put("todayValue", list);
 		
 		return map;
+		
 	}
 	
-	@RequestMapping(value="/main/getChartData.do")
-	@ResponseBody
-	public Map<String, Object> getChartData(CommandMap commandMap) throws Exception{
-		log.info("============== getChartData.do  dateType : "+commandMap.get("DATE_TYPE"));
-		log.info("============== getChartData.do  chartType : "+commandMap.get("CHART_TYPE"));
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		if(commandMap.get("DATE_TYPE") == null || "".equals(commandMap.get("DATE_TYPE")))   commandMap.put("DATE_TYPE", "daily"); //날짜 기본값 세팅
-		if(commandMap.get("CHART_TYPE") == null || "".equals(commandMap.get("CHART_TYPE"))) commandMap.put("CHART_TYPE", "pie");
-		// daily weekly monthly
-		//값 세팅
-		
-		
-		List<Map<String, Object>> list	= bodyCheckService.getChartData(commandMap.getMap());
-		
-		map.put("chartData", list);
-		log.info("-------------------------------------------------------- "+commandMap.get("DATE_TYPE"));
-		return map;
-	}
+	@RequestMapping(value="/main/getBodyCheckDetail.do")
+    @ResponseBody
+    public Map<String, Object> getBodyCheckDetail() throws Exception{
+    	
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	List<Map<String, Object>> list = bodyCheckService.selectBodyCheckDetail();
+    	List<Map<String, Object>> thList = bodyCheckService.getThList();
+    	
+    	map.put("thList", thList);
+    	map.put("result", list);
+    	
+    	return map;
+    }
+	
+	
 }

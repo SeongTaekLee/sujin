@@ -34,6 +34,7 @@
      	      ,CODE_CLASS
      	      ,CODE_VAL
      	  FROM CODE_TB
+     	 WHERE CODE_CLASS = 'BODY_CHECK_LEVEL'
       ORDER BY CODE_CD
      </select>
      
@@ -53,77 +54,7 @@
      	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD') 
      </select>
      
-     <select id="getLineChartData" parameterType="hashmap" resultType="hashmap">
-     	SELECT T1.CHECK_NO
-     	      ,T1.COL_AVG 
-     	  FROM (
-     	  <if test="DATE_TYPE=='daily'">
-					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'MM"월"DD"일"') AS CHECK_NO   
-					        ,ROUND( (B001+B002+B003+B004+B005+B006+B007+B008+B009)/8 , 2) AS COL_AVG
-					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD')  <![CDATA[>=]]> SYSDATE- (1*9)
-		  </if>
-		  <if test="DATE_TYPE=='weekly'">
-		  			  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"WW"주"') AS CHECK_NO   
-					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008+B009)/8) , 2) AS COL_AVG
-					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[>=]]> SYSDATE- (7*9)
-					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"WW"주"')
-		  </if>
-		  <if test="DATE_TYPE=='monthly'">
-		  			  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"MM"월"') AS CHECK_NO   
-					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008+B009)/8) , 2) AS COL_AVG
-					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[>=]]> ADD_MONTHS(SYSDATE , -9 )
-					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYY"년"MM"월"')
-		  </if>
-			    ) T1
-		ORDER BY T1.CHECK_NO DESC
-     </select>
      
-     <select id="getPieChartData" parameterType="hashmap" resultType="hashmap">
-     	  SELECT  SUM(B001) AS B001
-		         ,SUM(B002) AS B002
-		         ,SUM(B003) AS B003
-		         ,SUM(B004) AS B004
-		         ,SUM(B005) AS B005
-		         ,SUM(B006) AS B006
-		         ,SUM(B007) AS B007
-		         ,SUM(B008) AS B008
-		         ,SUM(B009) AS B009
-		    FROM BODY_CHECK_LIST
-		    <if test="DATE_TYPE=='daily'">
-		   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]>  (SYSDATE - 1*9)
-		    </if>
-		    <if test="DATE_TYPE=='weekly'">
-		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> (SYSDATE - 7*9)
-		    </if>
-		    <if test="DATE_TYPE=='monthly'">
-		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> ADD_MONTHS(SYSDATE, -9)
-		    </if>
-     </select>
-     
-     <select id="getBarChartData" parameterType="hashmap" resultType="hashmap">
-     	  SELECT  SUM(B001) AS B001
-		         ,SUM(B002) AS B002
-		         ,SUM(B003) AS B003
-		         ,SUM(B004) AS B004
-		         ,SUM(B005) AS B005
-		         ,SUM(B006) AS B006
-		         ,SUM(B007) AS B007
-		         ,SUM(B008) AS B008
-		         ,SUM(B009) AS B009
-		    FROM BODY_CHECK_LIST
-		    <if test="DATE_TYPE=='daily'">
-		    WHERE CHECK_NO = (SELECT MAX(CHECK_NO) FROM BODY_CHECK_LIST )
-		    </if>
-		    <if test="DATE_TYPE=='weekly'">
-		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> (SYSDATE - 7*1)
-		    </if>
-		    <if test="DATE_TYPE=='monthly'">
-		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> ADD_MONTHS(SYSDATE, -1)
-		    </if>
-     </select>
      
      <update id="mergeBodyCheck" parameterType="hashmap" >
      	MERGE INTO BODY_CHECK_LIST A
@@ -160,5 +91,36 @@
      	        VALUES (B.CHECK_NO, B.B001, B.B002, B.B003, B.B004, B.B005, B.B006, B.B007, B.B008, B.B009, B.REG_DT, B.RMK)
      
      </update>
+     
+     
+     <select id="selectBodyCheckDetail" parameterType="hashmap" resultType="hashmap">
+     <![CDATA[ 
+     	SELECT CHECK_NO
+              ,TO_CHAR(TO_DATE( CHECK_NO, 'YYYYMMDD' ), 'YYYY"년"MM"월"DD"일"') AS CHECK_NO_DATE
+        	  ,B001
+        	  ,B002
+        	  ,B003
+        	  ,B004
+        	  ,B005
+        	  ,B006
+        	  ,B007
+        	  ,B008
+        	  ,B009
+        	  ,(B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008 + B009)    AS SUM
+        	  ,ROUND((B001 + B002 + B003 + B004 + B005 + B006 + B007 + B008 + B009)/8 , 2)  AS AVG
+        	  ,NVL( TO_CHAR(  REG_DT, 'hh:mm:ss' ), 'NO TIME' ) AS REG_DT
+        	  ,NVL(RMK, ' ') AS RMK
+          FROM BODY_CHECK_LIST
+         WHERE ROWNUM <= 100
+      ORDER BY CHECK_NO DESC
+     ]]> 
+        
+     </select>
+     
+     <select id="getThList" resultType="hashmap">
+     	SELECT BODY_KOR
+     	  FROM BODY_CHECK_LIST_MAP
+      ORDER BY BODY_CD 
+     </select>
      
 </mapper>
