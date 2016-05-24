@@ -82,9 +82,12 @@ public class BodyCheckController {
 	@ResponseBody
 	public Map<String, Object> getChartData(CommandMap commandMap) throws Exception{
 		log.info("============== getChartData.do  dateType : "+commandMap.get("DATE_TYPE"));
+		log.info("============== getChartData.do  chartType : "+commandMap.get("CHART_TYPE"));
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		if(commandMap.get("DATE_TYPE") == null || "".equals(commandMap.get("DATE_TYPE"))) commandMap.put("DATE_TYPE", "daily"); //날짜 기본값 세팅
+		if(commandMap.get("DATE_TYPE") == null || "".equals(commandMap.get("DATE_TYPE")))   commandMap.put("DATE_TYPE", "daily"); //날짜 기본값 세팅
+		if(commandMap.get("CHART_TYPE") == null || "".equals(commandMap.get("CHART_TYPE"))) commandMap.put("CHART_TYPE", "pie");
 		// daily weekly monthly
 		//값 세팅
 		

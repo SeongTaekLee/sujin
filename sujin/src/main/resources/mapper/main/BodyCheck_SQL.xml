@@ -51,21 +51,7 @@
      	 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD') 
      </select>
      
-     <select id="getChartData" parameterType="hashmap" resultType="hashmap">
-     	<!-- 
-     	SELECT T1.CHECK_NO
-     	      ,T1.COL_AVG 
-     	  FROM (
-					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW') AS CHECK_NO   
-					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
-					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (7*9)
-					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW')
-			    ) T1
-		ORDER BY T1.CHECK_NO DESC
-		 -->
-		
-  
+     <select id="getLineChartData" parameterType="hashmap" resultType="hashmap">
      	SELECT T1.CHECK_NO
      	      ,T1.COL_AVG 
      	  FROM (
@@ -91,20 +77,48 @@
 		  </if>
 			    ) T1
 		ORDER BY T1.CHECK_NO DESC
-     	
-     	<!-- 
-     	<if test="${DATE_TYPE}=='weekly'">
-     	SELECT T1.CHECK_NO
-     	      ,T1.COL_AVG 
-     	  FROM (
-					  SELECT TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW') AS CHECK_NO   
-					        ,ROUND( AVG((B001+B002+B003+B004+B005+B006+B007+B008)/8) , 2) AS COL_AVG
-					    FROM BODY_CHECK_LIST
-					   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') >= SYSDATE- (7*9)
-					GROUP BY TO_CHAR(TO_DATE(CHECK_NO, 'YYYYMMDD'), 'YYYYMMWW')
-			    ) T1
-		ORDER BY T1.CHECK_NO DESC
-     	</if> -->
+     </select>
+     
+     <select id="getPieChartData" parameterType="hashmap" resultType="hashmap">
+     	  SELECT  SUM(B001) AS B001
+		         ,SUM(B002) AS B002
+		         ,SUM(B003) AS B003
+		         ,SUM(B004) AS B004
+		         ,SUM(B005) AS B005
+		         ,SUM(B006) AS B006
+		         ,SUM(B007) AS B007
+		         ,SUM(B008) AS B008
+		    FROM BODY_CHECK_LIST
+		    <if test="DATE_TYPE=='daily'">
+		   WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]>  (SYSDATE - 1*9)
+		    </if>
+		    <if test="DATE_TYPE=='weekly'">
+		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> (SYSDATE - 7*9)
+		    </if>
+		    <if test="DATE_TYPE=='monthly'">
+		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> ADD_MONTHS(SYSDATE, -9)
+		    </if>
+     </select>
+     
+     <select id="getBarChartData" parameterType="hashmap" resultType="hashmap">
+     	  SELECT  SUM(B001) AS B001
+		         ,SUM(B002) AS B002
+		         ,SUM(B003) AS B003
+		         ,SUM(B004) AS B004
+		         ,SUM(B005) AS B005
+		         ,SUM(B006) AS B006
+		         ,SUM(B007) AS B007
+		         ,SUM(B008) AS B008
+		    FROM BODY_CHECK_LIST
+		    <if test="DATE_TYPE=='daily'">
+		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]>  (SYSDATE - 1*9)
+		    </if>
+		    <if test="DATE_TYPE=='weekly'">
+		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> (SYSDATE - 7*9)
+		    </if>
+		    <if test="DATE_TYPE=='monthly'">
+		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> ADD_MONTHS(SYSDATE, -9)
+		    </if>
      </select>
      
      <update id="mergeBodyCheck" parameterType="hashmap" >

@@ -4,7 +4,9 @@
 <script src="/sujin/js/bootstrap.js"></script>
 
 <!-- 구글 차트 api -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script> 
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
 
 <!-- 네이버 스마트에디터 -->
 <!-- <script type="text/javascript" src="/sujin/smartEditor/js/HuskyEZCreator.js" charset="utf-8"></script> -->

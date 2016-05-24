@@ -47,11 +47,17 @@
 			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataD" value="daily"   >
 			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataW" value="weekly"  >
 			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataM" value="monthly" >
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataPie" value="PieChart" >
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataBar" value="BarChart" >
+			<input type="button" class="btn btn-default btn-xs clickChartData" name="clickChartDataLine" value="LineChart" >
 		</div>
 		<div id = "checkVal"> </div>
-		<div id="line_top_x">
+		<!-- <div id="googleChartArea">
 		
-		</div>
+		</div> -->
+		<div id="chart_div"    class="googleChart" style="border: 1px solid #cccl; visibility:visible;" ></div>
+		<div id="piechart_div" class="googleChart" style="border: 1px solid #cccl; visibility:visible;" ></div>
+        <div id="barchart_div" class="googleChart" style="border: 1px solid #cccl; visibility:hidden;" ></div>
 	  </div>
 	  
 	  
@@ -71,26 +77,40 @@
 
 <%@ include file="/WEB-INF/include/include-body.jspf" %>
 <script type="text/javascript">
+	var googleFlag   = false;
 	var chartDataArr = new Array();
+	var dateType	 = "daily";
+	var chartType	 = "pie";
+	
 	$(document).ready(function(){    
 		init();
 
-		fnGetChartData();
+		//fnGetChartData();
 		
 		$(":input[name=clickChartDataD]").click(function(){
-			var dateType = "daily"; 
-			fnGetChartData(dateType);
+			dateType = "daily"; 
+			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataW]").click(function(){
-			var dateType = "weekly"; 
-			fnGetChartData(dateType);
+			dateType = "weekly"; 
+			fnGetChartData();
 		}); 
 		$(":input[name=clickChartDataM]").click(function(){
-			var dateType = "monthly"; 
-			fnGetChartData(dateType);
+			dateType = "monthly"; 
+			fnGetChartData();
 		}); 
-		
-		
+		$(":input[name=clickChartDataPie]").click(function(){
+			chartType = "pie";
+			fnGetChartData();
+		}); 
+		$(":input[name=clickChartDataBar]").click(function(){
+			chartType = "bar";
+			fnGetChartData();
+		}); 
+		$(":input[name=clickChartDataLine]").click(function(){
+			chartType = "line";
+			fnGetChartData();
+		}); 
 	});
 	
 	function init(){ //getBodyCheck sql 가져오기(form)
@@ -207,73 +227,140 @@
 	}
 	
 	/* -------------------------------------[구글 차트]------------------------------------------- */
-	google.charts.load('current', {'packages':['line']});
-    google.charts.setOnLoadCallback(drawChart);
+ 	// Load Charts and the corechart and barchart packages.
+    google.load("visualization", "1", {packages:["corechart"]});
 
-    function drawChart() {   
-    	
+    // Draw the pie chart and bar chart when Charts is loaded.
+    google.setOnLoadCallback(fnGetChartData);
+    
+    function drawVisualization() { 
+	  
+      if(chartType == 'pie'){ 
+		       
+    	  var data = new google.visualization.DataTable();
+          data.addColumn('string', '신체');
+          data.addColumn('number', '점수');
+          data.addRows(chartDataArr); 
+          /* data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]); */
+          
+			var piechart_options = {title:  '아픈 부분 비율',
+				 		  		    width:  $(".jumbotron").first().width(),
+				                   height:  300};
+			var piechart = new google.visualization.PieChart(document.getElementById('chart_div'));
+			piechart.draw(data, piechart_options);
+      }else if(chartType == 'bar'){ 
+    	  var title = "";
+    	       if(dateType == 'daily'  ) title = '오늘의 상태 바 그래프';
+    	  else if(dataType == 'weekly' ) title = '주단위 상태 바 그래프';
+    	  else if(dataType == 'monthly') title = '월단위 상태 바 그래프';
+    	  
+    	  var data = new google.visualization.DataTable();
+          data.addColumn('string', '신체');
+          data.addColumn('number', '점수');
+          data.addRows(chartDataArr); 
+          /* data.addRows([
+            ['Mushrooms', 3],
+            ['Onions', 1],
+            ['Olives', 1],
+            ['Zucchini', 1],
+            ['Pepperoni', 2]
+          ]); */
+          
+			var barchart_options = {title:  title,
+						  		    width:  $(".jumbotron").first().width(),
+				                   height:  300,
+				                   legend: 'none'};
+			var barchart = new google.visualization.BarChart(document.getElementById('chart_div'));
+			barchart.draw(data, barchart_options);
+      }else if(chartType == 'line'){
+    	  
+	    	var data = new google.visualization.DataTable();
+	        data.addColumn('string', '날짜');
+	        data.addColumn('number', '평균');
+	        data.addRows(chartDataArr); 
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Day');
-      data.addColumn('number', 'AVG');
- 
-      /* data.addRows([
-        [1,  37.8],
-        [2,  30.9],
-        [3,  25.4],
-        [4,  11.7],
-        [5,  11.9]
-      ]); */
+          var linechart_options = {title: '평균치 꺾은선 그래프',
+						           width:  $(".jumbotron").first().width(),
+						          height: 300,
 
-      data.addRows(chartDataArr); 
+            axes: {x: { 0: {side: 'top'} }
+            }
+          };
+    	  var linechart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    	  linechart.draw(data, linechart_options);
+    	  	
+      }
+      
+      
 
-      var options = {
-        chart: {
-          title: 'Score of Health',
-          subtitle: 'Daily'
-        },
-        width:  $(".jumbotron").first().width(),
-        //width: 500,
-        height: 300,
-
-        axes: {
-          x: {
-            0: {side: 'top'}
-          }
-        }
-      };
-
-      var chart = new google.charts.Line(document.getElementById('line_top_x'));
-
-      chart.draw(data, options);
+      
+      
     }
 	
 	/* ----------------------------------[ 구글 차트 창크기 조절]--------------------------------------- */
 	
 	
 	$(window).resize( function(){
-		var w = $(".jumbotron").first().width();
-		//$("#checkVal").html(w); //가로길이 확인
-		drawChart();
+		
+		if(googleFlag){
+			drawVisualization(); //window resize가 fnGetChartData보다 먼저 타는 문제로 flag 체크함. 데이터 가져온 후에 뿌립시다.
+	    }
 		
 	} ).resize();
 	
 	/* ------------------------[차트 데이터 가져오기]----------------------------- */
-	function fnGetChartData(dateType){
-		//alert(dateType);
-		param = {DATE_TYPE : dateType};
+	function fnGetChartData(){ 
+		googleFlag 		= true;
+		var CALC_DAYS 	= 1;
+		
+		//if(dateType == null){dateType="daily";}
+		//if(chartType == null){chartType="pie";}
+		
+		param = {DATE_TYPE  : dateType,
+				 CHART_TYPE : chartType};
 		
 		$.ajax({
 			data 		: "POST",
 			url			: "/sujin/main/getChartData.do",
 			dataType 	: "JSON",
-			data		: {DATE_TYPE : dateType},
+			data		: {DATE_TYPE : dateType,
+				 		   CHART_TYPE : chartType},
 			success		: function(data){
 				chartDataArr = new Array();
-				$.each(data.chartData, function(idx, obj){ 
-					chartDataArr.unshift(new Array(String(obj.CHECK_NO) , obj.COL_AVG));
-				});
-				drawChart();
+				
+				
+				if(chartType == "pie"){
+					chartDataArr.push(new Array( "머리"		, data.chartData[0].B001 ));
+					chartDataArr.push(new Array( "어깨(좌)"	, data.chartData[0].B002 ));
+					chartDataArr.push(new Array( "어깨(우)"	, data.chartData[0].B003 ));
+					chartDataArr.push(new Array( "등"		, data.chartData[0].B004 ));
+					chartDataArr.push(new Array( "속"		, data.chartData[0].B005 ));
+					chartDataArr.push(new Array( "배"		, data.chartData[0].B006 ));
+					chartDataArr.push(new Array( "다리"		, data.chartData[0].B007 ));
+					chartDataArr.push(new Array( "팔"		, data.chartData[0].B008 ));
+				}else if(chartType == "bar"){
+					chartDataArr.push(new Array( "머리"		, data.chartData[0].B001 ));
+					chartDataArr.push(new Array( "어깨(좌)"	, data.chartData[0].B002 ));
+					chartDataArr.push(new Array( "어깨(우)"	, data.chartData[0].B003 ));
+					chartDataArr.push(new Array( "등"		, data.chartData[0].B004 ));
+					chartDataArr.push(new Array( "속"		, data.chartData[0].B005 ));
+					chartDataArr.push(new Array( "배"		, data.chartData[0].B006 ));
+					chartDataArr.push(new Array( "다리"		, data.chartData[0].B007 ));
+					chartDataArr.push(new Array( "팔"		, data.chartData[0].B008 ));
+					
+				}else if(chartType == "line"){
+					$.each(data.chartData, function(idx, obj){ 
+						chartDataArr.unshift(new Array(String(obj.CHECK_NO) , obj.COL_AVG));
+					});
+				}
+				
+				drawVisualization();
 			},
 			complete	: function(data){
 				//alert(JSON.stringify(data));
@@ -283,7 +370,7 @@
 			}
 		});
 		
-		chartData = "";
+		
 	}
 	
 	

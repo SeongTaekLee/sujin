@@ -39,7 +39,14 @@ public class BodyCheckDAO extends AbstractDAO{
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getChartData(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return selectList("bodyCheck.getChartData", map);
+		
+		if     ("pie" .equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getPieChartData",  map);
+		else if("bar" .equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getBarChartData",  map);
+		else if("line".equals(map.get("CHART_TYPE")) ) return selectList("bodyCheck.getLineChartData", map);
+		
+		
+		return selectList("bodyCheck.getPieChartData", map);
+		
 	}
 
 	

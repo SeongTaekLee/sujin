@@ -120,6 +120,9 @@ hr {
 	padding : 30px;
 }
 
-
+.googleChart {
+	position: relative;
+	top:100px;
+}
 
 
