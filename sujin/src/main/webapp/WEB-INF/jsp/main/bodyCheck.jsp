@@ -55,8 +55,6 @@
 		<!-- <div id="googleChartArea">
 		
 		</div> -->
-		<div id="chart_div"    class="googleChart" style="border: 1px solid #cccl; visibility:visible;" ></div>
-		<div id="piechart_div" class="googleChart" style="border: 1px solid #cccl; visibility:visible;" ></div>
         <div id="barchart_div" class="googleChart" style="border: 1px solid #cccl; visibility:hidden;" ></div>
 	  </div>
 	  
