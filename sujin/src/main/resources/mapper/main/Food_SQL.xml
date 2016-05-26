@@ -2,16 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="food">
-     
-    <select id="dummy" parameterType="hashmap" resultType="hashmap">
-    	SELECT 1
-    	  FROM DUAL
+
+    <select id="getBODY_CHECK_LEVEL_CD" parameterType="hashmap" resultType="hashmap">
+    	SELECT CODE_CD, CODE_NM, CODE_VAL 
+		  FROM CODE_TB
+		 WHERE CODE_CLASS='BODY_CHECK_LEVEL'
     </select>
+    
+    <select id="getFOOD_CONFIRM_CD" parameterType="hashmap" resultType="hashmap">
+    	SELECT CODE_CD, CODE_NM, CODE_VAL 
+		  FROM CODE_TB
+		 WHERE CODE_CLASS='FOOD_CONFIRM'
+    </select>
+    
+    <select id="getFOOD_LV_CD" parameterType="hashmap" resultType="hashmap">
+    	SELECT CODE_CD, CODE_NM, CODE_VAL 
+		  FROM CODE_TB
+		 WHERE CODE_CLASS='FOOD_LV'
+    </select>
+    
+    <select id="getFoodList" parameterType="hashmap" resultType="hashmap">
+    <![CDATA[
+    	SELECT * 
+    	  FROM (SELECT  ROWNUM R
+					   ,SOURCE.FOOD_CD
+					   ,TO_CHAR(SOURCE.EAT_TIME, 'YYYY-MM-DD HH24:MI:SS') AS EAT_TIME
+			           ,SOURCE.FOOD_LV
+			           ,SOURCE.CONFIRM_CD
+			           ,SOURCE.LOCATION
+			           ,SOURCE.TASTE
+			           ,SOURCE.LAT
+			           ,SOURCE.LNG
+			           ,SOURCE.MENU1
+			           ,SOURCE.MENU2
+			           ,SOURCE.MENU3
+			           ,SOURCE.MENU4
+			           ,SOURCE.MENU5
+			           ,SOURCE.MENU6
+			           ,SOURCE.MENU7
+			           ,SOURCE.MENU8
+			           ,SOURCE.MENU9
+			           ,SOURCE.REG_DT
+			           ,SOURCE.RMK
+			      FROM  FOOD SOURCE
+		 ORDER BY FOOD_CD DESC)
+		 WHERE R >= ${START} 
+		   AND R <  ${END}
+	]]>
+    </select>
+    
     
     <insert id="insertFood" parameterType="hashmap">
     	INSERT INTO FOOD 
     	(FOOD_CD,EAT_TIME,FOOD_LV,CONFIRM_CD,LOCATION,TASTE,MENU1,MENU2,MENU3,MENU4,MENU5,MENU6,MENU7,MENU8,MENU9,REG_DT,RMK)
-    	( SELECT     ( SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(SUBSTR( MAX(FOOD_CD), 9,3)+1,3,'0') FROM FOOD)
+    	VALUES
+    	(           <!-- ( SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(SUBSTR( MAX(FOOD_CD), 9,3)+1,3,'0') FROM FOOD) -->
+    				(SELECT CASE SUBSTR(MAX(FOOD_CD), 0, 8) 
+					        WHEN TO_CHAR(SYSDATE, 'YYYYMMDD') THEN  TO_CHAR(MAX(FOOD_CD)+1)
+					        ELSE TO_CHAR(SYSDATE, 'YYYYMMDD') || '001'
+					        END AS RESULTS
+					   FROM FOOD)
 					,TO_DATE('${EAT_TIME}', 'YYYY-MM-DD HH24:MI:SS')
 					,'${FOOD_LV}'		
 					,'${CONFIRM_CD}'	
@@ -28,28 +78,54 @@
 					,'${MENU9}'			
 					, SYSDATE			
 					,'${RMK}'			
-			  FROM  DUAL  )
+		)
     
     </insert>
     
-    <!-- 	TARGET.FOOD_CD      = SOURCE.FOOD_CD     
-			TARGET.EAT_TIME     = SOURCE.EAT_TIME    
-			TARGET.FOOD_LV      = SOURCE.FOOD_LV     
-			TARGET.CONFIRM_CD   = SOURCE.CONFIRM_CD  
-			TARGET.LOCATION     = SOURCE.LOCATION    
-			TARGET.TASTE        = SOURCE.TASTE       
-			TARGET.LAT          = SOURCE.LAT         
-			TARGET.LNG          = SOURCE.LNG         
-			TARGET.MENU1        = SOURCE.MENU1       
-			TARGET.MENU2        = SOURCE.MENU2       
-			TARGET.MENU3        = SOURCE.MENU3       
-			TARGET.MENU4        = SOURCE.MENU4       
-			TARGET.MENU5        = SOURCE.MENU5       
-			TARGET.MENU6        = SOURCE.MENU6       
-			TARGET.MENU7        = SOURCE.MENU7       
-			TARGET.MENU8        = SOURCE.MENU8       
-			TARGET.MENU9        = SOURCE.MENU9       
-			TARGET.REG_DT       = SOURCE.REG_DT      
-			TARGET.RMK 		  	= SOURCE.RMK 		-->
+    <delete id="delFoodList" parameterType="string">
+    	DELETE FROM FOOD
+    	      WHERE FOOD_CD = #{val}
+    </delete>
+    
+    <update id="updateFoodList" parameterType="hashmap">
+    	UPDATE   FOOD 
+    	   SET 	 EAT_TIME     = TO_DATE('${EAT_TIME   }', 'YYYY-MM-DD HH24:MI:SS')
+				,FOOD_LV      = '${FOOD_LV    }'
+				,CONFIRM_CD   = '${CONFIRM_CD }'
+				,LOCATION     = '${LOCATION   }'
+				,TASTE        = '${TASTE      }'
+				,MENU1        = '${MENU1      }'
+				,MENU2        = '${MENU2      }'
+				,MENU3        = '${MENU3      }'
+				,MENU4        = '${MENU4      }'
+				,MENU5        = '${MENU5      }'
+				,MENU6        = '${MENU6      }'
+				,MENU7        = '${MENU7      }'
+				,MENU8        = '${MENU8      }'
+				,MENU9        = '${MENU9      }'
+				,REG_DT       =  SYSDATE
+				,RMK 		  = '${RMK 		  }'
+		  WHERE  FOOD_CD	  = '${FOOD_CD    }'
+    </update>
+    
+    <!-- 	TARGET.FOOD_CD      = '${FOOD_CD    }' 
+			TARGET.EAT_TIME     = '${EAT_TIME   }' 
+			TARGET.FOOD_LV      = '${FOOD_LV    }' 
+			TARGET.CONFIRM_CD   = '${CONFIRM_CD }' 
+			TARGET.LOCATION     = '${LOCATION   }' 
+			TARGET.TASTE        = '${TASTE      }' 
+			TARGET.LAT          = '${LAT        }' 
+			TARGET.LNG          = '${LNG        }' 
+			TARGET.MENU1        = '${MENU1      }' 
+			TARGET.MENU2        = '${MENU2      }' 
+			TARGET.MENU3        = '${MENU3      }' 
+			TARGET.MENU4        = '${MENU4      }' 
+			TARGET.MENU5        = '${MENU5      }' 
+			TARGET.MENU6        = '${MENU6      }' 
+			TARGET.MENU7        = '${MENU7      }' 
+			TARGET.MENU8        = '${MENU8      }' 
+			TARGET.MENU9        = '${MENU9      }' 
+			TARGET.REG_DT       = '${REG_DT     }' 
+			TARGET.RMK 		  	= '${RMK 		}'	-->
      
 </mapper>

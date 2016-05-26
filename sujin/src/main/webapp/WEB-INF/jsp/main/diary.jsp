@@ -25,7 +25,7 @@
 
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/sujin/main/bodyCheck.do">몸</a></li>
+              <li><a href="/sujin/main/bodyCheck.do">몸</a></li>
               <li><a href="/sujin/main/food.do">음식</a></li>
               <li><a href="/sujin/main/coffee.do">커피</a></li>
               <li class="active"><a href="/sujin/main/diary.do">일기</a></li>
@@ -294,7 +294,7 @@ $(document).ready(function(){ //alert("docu ready");
     	fnGetDiaryList();
     });
     
-    function fnDelArticle(val){
+    function fnDelArticle(val){ //삭제
     	
     	if(val != null){ //값있어야 실행
     		
