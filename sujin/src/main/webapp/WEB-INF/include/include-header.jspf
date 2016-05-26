@@ -3,12 +3,15 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
-<script type="text/JavaScript"  src="/sujin/js/jquery.min.js"></script>
+
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="/sujin/css/bootstrap.css">
 
 <!-- 부가적인 테마 -->
 <!-- <link rel="stylesheet" href="/sujin/css/bootstrap-theme.css"> -->
+
+<!-- bootstrap datetime picker -->
+<link href="/sujin/css/bootstrap-datetimepicker.css" rel="stylesheet" />
 
 <!-- 커스텀 CSS -->
 <link rel="stylesheet" href="/sujin/css/sujin.css">
@@ -16,5 +19,7 @@
 
 <!-- ck editor -->
 <script type="text/javascript" src="/sujin/ckeditor/ckeditor.js"></script>
+
+<script type="text/JavaScript" src="/sujin/js/jquery.min.js"></script>
 
 <title>home</title>

@@ -26,7 +26,7 @@
 
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/sujin/main/bodyCheck.do">건강상태</a></li>
+              <li class="active"><a href="/sujin/main/bodyCheck.do">몸</a></li>
               <li><a href="/sujin/main/food.do">음식</a></li>
               <li><a href="/sujin/main/coffee.do">커피</a></li>
               <li><a href="/sujin/main/diary.do">일기</a></li>

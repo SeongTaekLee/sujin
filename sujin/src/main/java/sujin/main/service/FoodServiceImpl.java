@@ -1,5 +1,7 @@
 package sujin.main.service;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -15,8 +17,8 @@ public class FoodServiceImpl implements FoodService{
 	private FoodDAO foodDAO;
 	
 	@Override
-	public void dummy() throws Exception {
+	public void insertFood(Map<String, Object> map) throws Exception {
 		// TODO Auto-generated method stub
-		foodDAO.dummy();
+		foodDAO.insertFood(map);
 	}
 }

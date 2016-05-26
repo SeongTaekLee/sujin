@@ -7,5 +7,49 @@
     	SELECT 1
     	  FROM DUAL
     </select>
+    
+    <insert id="insertFood" parameterType="hashmap">
+    	INSERT INTO FOOD 
+    	(FOOD_CD,EAT_TIME,FOOD_LV,CONFIRM_CD,LOCATION,TASTE,MENU1,MENU2,MENU3,MENU4,MENU5,MENU6,MENU7,MENU8,MENU9,REG_DT,RMK)
+    	( SELECT     ( SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') || LPAD(SUBSTR( MAX(FOOD_CD), 9,3)+1,3,'0') FROM FOOD)
+					,TO_DATE('${EAT_TIME}', 'YYYY-MM-DD HH24:MI:SS')
+					,'${FOOD_LV}'		
+					,'${CONFIRM_CD}'	
+					,'${LOCATION}'		
+					,'${TASTE}'			
+					,'${MENU1}'			
+					,'${MENU2}'			
+					,'${MENU3}'			
+					,'${MENU4}'			
+					,'${MENU5}'			
+					,'${MENU6}'			
+					,'${MENU7}'			
+					,'${MENU8}'			
+					,'${MENU9}'			
+					, SYSDATE			
+					,'${RMK}'			
+			  FROM  DUAL  )
+    
+    </insert>
+    
+    <!-- 	TARGET.FOOD_CD      = SOURCE.FOOD_CD     
+			TARGET.EAT_TIME     = SOURCE.EAT_TIME    
+			TARGET.FOOD_LV      = SOURCE.FOOD_LV     
+			TARGET.CONFIRM_CD   = SOURCE.CONFIRM_CD  
+			TARGET.LOCATION     = SOURCE.LOCATION    
+			TARGET.TASTE        = SOURCE.TASTE       
+			TARGET.LAT          = SOURCE.LAT         
+			TARGET.LNG          = SOURCE.LNG         
+			TARGET.MENU1        = SOURCE.MENU1       
+			TARGET.MENU2        = SOURCE.MENU2       
+			TARGET.MENU3        = SOURCE.MENU3       
+			TARGET.MENU4        = SOURCE.MENU4       
+			TARGET.MENU5        = SOURCE.MENU5       
+			TARGET.MENU6        = SOURCE.MENU6       
+			TARGET.MENU7        = SOURCE.MENU7       
+			TARGET.MENU8        = SOURCE.MENU8       
+			TARGET.MENU9        = SOURCE.MENU9       
+			TARGET.REG_DT       = SOURCE.REG_DT      
+			TARGET.RMK 		  	= SOURCE.RMK 		-->
      
 </mapper>

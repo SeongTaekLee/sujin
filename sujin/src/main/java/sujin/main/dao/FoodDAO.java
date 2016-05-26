@@ -1,5 +1,7 @@
 package sujin.main.dao;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -10,9 +12,10 @@ import sujin.common.dao.AbstractDAO;
 public class FoodDAO extends AbstractDAO{
 	Logger log = Logger.getLogger(getClass());
 	
-	public void dummy() {
+
+	public void insertFood(Map<String, Object> map) throws Exception{
 		// TODO Auto-generated method stub
-		selectOne("food.dummy");
+		selectOne("food.insertFood", map);
 	}
 
 }
