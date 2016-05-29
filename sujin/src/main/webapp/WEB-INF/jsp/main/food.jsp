@@ -612,6 +612,10 @@
 			alert("끝!");
 			$("#add-list-btn").addClass("disabled");
 		}
+		
+		//alert($("[name=TASTE]").parent().find("[name=TASTE]").html());
+		
+		
 	}
 		
 	function editList(FOOD_CD){ //리스트 수정

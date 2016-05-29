@@ -3,9 +3,73 @@
  
 <mapper namespace="coffee">
      
-    <select id="dummy" parameterType="hashmap" resultType="hashmap">
-    	SELECT 1
-    	  FROM DUAL
+    <!-- 
+    CF_CD
+	CF_NM
+	DRK_DT
+	LOCATION
+	TASTE
+	LAT
+	LNG
+	REG_DT
+	RMK
+     -->
+    <select id="getCoffeeList" parameterType="hashmap" resultType="hashmap">
+    <![CDATA[
+    	 SELECT * FROM(SELECT  ROWNUM R
+		                      ,CF_CD
+		                      ,CF_NM
+		                      ,TO_CHAR(DRK_DT, 'YYYY-MM-DD HH24:MI:SS') AS DRK_DT
+		                      ,LOCATION
+		                      ,TASTE
+		                      ,RMK
+		                 FROM  COFFEE
+		             ORDER BY  CF_CD DESC)
+		  WHERE R >= ${start}
+		    AND R <= ${end}
+	]]>
     </select>
-     
+    
+    
+    
+    <insert id="inputCFSave" parameterType="hashmap">
+    	INSERT INTO COFFEE 
+    	(CF_CD, CF_NM, DRK_DT, LOCATION, TASTE, REG_DT, RMK)
+    	VALUES
+    	((SELECT CASE WHEN SUBSTR(TO_CHAR(MAX(CF_CD)), 0, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+				     THEN TO_CHAR(MAX(CF_CD)+1)
+				     ELSE TO_CHAR(SYSDATE, 'YYYYMMDD') || '001'
+				     END AS CF_CF
+		   FROM COFFEE)
+      	,'${CF_NM}'
+      	,TO_DATE('${DRK_DT}', 'YYYY-MM-DD HH24:MI:SS')
+      	,'${LOCATION}'
+      	,'${TASTE}'
+      	,SYSDATE
+      	,'${RMK}')
+    </insert>
+    
+    
+    <delete id="delCoffeeList" parameterType="string">
+    	DELETE FROM COFFEE
+    	      WHERE CF_CD = #{CF_CD}
+    </delete>
+    
+    <update id="updateCoffeeList" parameterType="hashmap">
+    	UPDATE COFFEE 
+    	   SET CF_NM	= '${CF_NM}'
+    	      ,DRK_DT	= TO_DATE('${DRK_DT}', 'YYYY-MM-DD HH24:MI:SS')
+    	      ,LOCATION	= '${LOCATION}'
+    	      ,TASTE	= '${TASTE}'
+    	      ,REG_DT	= SYSDATE
+    	      ,RMK		= '${RMK}'
+    	 WHERE CF_CD	= '${CF_CD}'
+    </update>
 </mapper>
+
+
+
+
+
+
+
