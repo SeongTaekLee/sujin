@@ -20,7 +20,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 				return true;
 				
 			}*/
-			
+			/*
 			if(request.getSession().getAttribute("user") != null){
 				
 				if(request.getRequestURI().contains("/login.do")){ //세션있고 로그인 페이지 이동
@@ -43,7 +43,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter{
 					return false;
 				}
 				
-			}
+			}*/
 			
 			
 			

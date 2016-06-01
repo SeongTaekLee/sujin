@@ -20,6 +20,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/sujin/main/login.do">메인</a>
           </div>
@@ -30,6 +31,7 @@
               <li><a href="/sujin/main/food.do">음식</a></li>
               <li><a href="/sujin/main/coffee.do">커피</a></li>
               <li><a href="/sujin/main/diary.do">일기</a></li>
+              <li><a href="/sujin/main/counsel.do">상담</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

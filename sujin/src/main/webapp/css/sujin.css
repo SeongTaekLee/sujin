@@ -139,5 +139,35 @@ hr {
 	padding : 30px;
 }
 
+.row { 
+	/* border : 1px solid lightgray; */
+	line-height : 35px;
+}
 
+.border {
+	border : 1px solid green;
+}
 
+.zero-marginB{
+	margin-bottom : 0px;
+}
+
+.back-gray {
+	background : lightgray;
+}
+
+@media (min-width: 768px) {
+  .relative-text-right {
+    text-align: left;
+  }
+}
+@media (min-width: 992px) {
+  .relative-text-right {
+    text-align: right;
+  }
+}
+@media (min-width: 1200px) {
+  .relative-text-right {
+    text-align: right;
+  }
+}
