@@ -171,3 +171,13 @@ hr {
     text-align: right;
   }
 }
+
+th {
+	min-width : 40px;
+}
+
+
+.limit_width{
+	max-width:300px;
+}
+
