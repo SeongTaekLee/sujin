@@ -12,10 +12,6 @@ import sujin.common.dao.AbstractDAO;
 public class SujinMainDAO extends AbstractDAO{
 	Logger log = Logger.getLogger(getClass());
 
-	public void mainDummy(Map<String, Object> map) throws Exception{
-		// TODO Auto-generated method stub
-		selectList("main.mainDummy");
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getChartData(Map<String, Object> map) throws Exception{
@@ -26,6 +22,47 @@ public class SujinMainDAO extends AbstractDAO{
 		
 		
 		return selectList("main.getPieChartData", map);
+	}
+	
+	public String getMainBodySummary() throws Exception{
+		// TODO Auto-generated method stub
+		return (String) selectOne("main.getMainBodySummary");
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getMainFoodSummary() throws Exception{
+		// TODO Auto-generated method stub
+		List<Map<String, Object>> list = selectList("main.getMainFoodSummary");
+		if(list.size() == 0){
+			return null;
+		}
+		return list.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getMainCoffeeSummary() throws Exception {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		List<Map<String, Object>> list = selectList("main.getMainCoffeeSummary");
+		if(list.size() == 0){
+			return null;
+		}
+		return list.get(0);
+	}
+
+	public String getMainDiarySummary() throws Exception{
+		// TODO Auto-generated method stub
+		return (String) selectOne("main.getMainDiarySummary");
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getMainCounselSummary() throws Exception{
+		// TODO Auto-generated method stub
+		List<Map<String, Object>> list = selectList("main.getMainCounselSummary");
+		if(list.size() == 0){
+			return null;
+		}
+		return list.get(0);
 	}
 
 }

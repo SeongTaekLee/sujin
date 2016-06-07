@@ -49,4 +49,43 @@ public class SujinMainController {
 		return map;
 	}
 	
+	@RequestMapping(value="/main/getMainBodySummary.do")
+	@ResponseBody
+	public Map<String, Object> getMainBodySummary() throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String result = mainService.getMainBodySummary();
+		log.info("body result = "+result);
+		map.put("result", result);
+		return map;
+	}
+	@RequestMapping(value="/main/getMainFoodSummary.do")
+	@ResponseBody
+	public Map<String, Object> getMainFoodSummary() throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = mainService.getMainFoodSummary();
+		log.info("food result = "+map);
+		return map;
+	}
+	@RequestMapping(value="/main/getMainCoffeeSummary.do")
+	@ResponseBody
+	public Map<String, Object> getMainCoffeeSummary() throws Exception{
+		Map<String, Object> map = mainService.getMainCoffeeSummary();
+		log.info("coffee result = "+map);
+		return map;
+	}
+	@RequestMapping(value="/main/getMainDiarySummary.do")
+	@ResponseBody
+	public String getMainDiarySummary() throws Exception{
+		String result = mainService.getMainDiarySummary();
+		log.info("diary result = "+result);
+		return result;
+	}
+	@RequestMapping(value="/main/getMainCounselSummary.do")
+	@ResponseBody
+	public Map<String, Object> getMainCounselSummary() throws Exception{
+		Map<String, Object> map = mainService.getMainCounselSummary();
+		log.info("diary result = "+map);
+		return map;
+	}
+	
 }

@@ -3,8 +3,55 @@
  
 <mapper namespace="main">
      
-     <select id="mainDummy" parameterType="hashmap" resultType="hashmap">
-         SELECT 1 FROM DUAL
+     <select id="getMainBodySummary" resultType="string" >
+     <![CDATA[
+     	SELECT ROUND((B001+B002+B003+B004+B005+B006+B007+B008+B009)/9, 2) AS BODY_AVG
+		  FROM BODY_CHECK_LIST
+		 WHERE CHECK_NO = TO_CHAR(SYSDATE, 'YYYYMMDD') 
+ 	 ]]>
+     </select>
+     
+     <select id="getMainFoodSummary" resultType="hashmap">
+     	SELECT * 
+     	  FROM (SELECT (SELECT CODE_NM FROM CODE_TB WHERE CODE_CLASS='FOOD_LV' AND CODE_VAL = FOOD_LV) AS FOOD_LV
+				       ,LOCATION
+				       ,RMK
+				  FROM  FOOD
+				 WHERE  SUBSTR(FOOD_CD, 0, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		      ORDER BY  EAT_TIME DESC
+				) 
+		WHERE ROWNUM = 1
+     </select>
+     
+     <select id="getMainCoffeeSummary" resultType="hashmap">
+     	SELECT *
+     	  FROM (SELECT CF_NM
+     	              ,TO_CHAR(DRK_DT, 'YYYY-MM-DD HH24:MI:SS') AS DRK_DT
+     	          FROM COFFEE
+     	         WHERE SUBSTR(CF_CD, 0, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+     	      ORDER BY DRK_DT DESC
+     	  		)
+     	 WHERE ROWNUM = 1
+     </select>
+     
+     <select id="getMainDiarySummary" resultType="string">
+     	SELECT COUNT(*)
+     	  FROM DIARY
+     	 WHERE DIARY_NO = TO_CHAR(SYSDATE, 'YYYYMMDD')
+     </select>
+     
+     <select id="getMainCounselSummary" resultType="hashmap">
+     	<!-- SELECT *
+			FROM COUNSEL CS ,
+			
+			( SELECT * FROM COUNSEL_VISIT A
+			WHERE VISIT_TIME = ( SELECT MAX(VISIT_TIME) 
+			                                    FROM COUNSEL_VISIT B 
+			                    )
+			) CV
+			WHERE CS.COUNSEL_CD = CV.VISIT_CD
+			; -->
+     
      </select>
      
      <select id="getLineChartData" parameterType="hashmap" resultType="hashmap">
@@ -78,5 +125,7 @@
 		    WHERE TO_DATE(CHECK_NO, 'YYYYMMDD') <![CDATA[ >=]]> ADD_MONTHS(SYSDATE, -1)
 		    </if>
      </select>
+     
+     
      
 </mapper>

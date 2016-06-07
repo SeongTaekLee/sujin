@@ -43,7 +43,76 @@
 
       </nav>
 
-
+	  <div class="round_wrapper form-marginT body"> 
+		<h4>몸상태 <button type="button" class="btn btn-default" name="bodySummary" style="margin-left:30px;"></button></h4>
+	  </div>
+	  
+	  <div class="round_wrapper form-marginT food">
+	  	<h4>음식 <button type="button" name="no_food" id="no_food" class="btn btn-danger hidden" style="margin-left:50px;">안먹음</button> </h4> 
+	  	<div class="form-horizontal">
+		  <div class="form-group">
+		    <label for="food_lv" class="col-sm-1 control-label">끼니</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="food_lv" name="food_lv" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="location" class="col-sm-1 control-label">음식점</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="location" name="location" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="rmk" class="col-sm-1 control-label">설명</label>
+		    <div class="col-sm-10">
+		      <textarea class="form-control" id="rmk" name="rmk" readonly></textarea>
+		    </div>
+		  </div>
+		 </div>
+		 
+	  </div>
+	  
+	  <div class="round_wrapper form-marginT coffee">
+	  	<h4>커피  <button type="button" name="no_coffee" id="no_coffee" class="btn btn-danger hidden" style="margin-left:50px;">안먹음</button> </h4>
+	  	<div class="form-horizontal">
+		  <div class="form-group">
+		    <label for="coffee_nm" class="col-sm-1 control-label">커피명</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="coffee_nm" name="coffee_nm" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="drk_dt" class="col-sm-1 control-label">시간</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="drk_dt" name="drk_dt" readonly>
+		    </div>
+		  </div>
+		 </div>
+		
+	  </div>
+	  
+	  <div class="round_wrapper form-marginT diary">
+	  	<h4>일기  <button type="button" class="btn btn-default" name="diarySummary" style="margin-left:50px;"></button></h4>
+	  </div>
+	  
+	  <div class="round_wrapper form-marginT counsel">
+	  	<h4>상담</h4>
+	  	상담(오늘자) 인원수, 최신 상담인원 이름
+	  	<div class="form-horizontal">
+		  <div class="form-group">
+		    <label for="counsel_cnt" class="col-sm-1 control-label">인원수</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="counsel_cnt" name="counsel_cnt" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="counsel_nm" class="col-sm-1 control-label">상담자</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="counsel_nm" name="counsel_nm" readonly>
+		    </div>
+		  </div>
+		 </div>
+	  </div>
 
       <!-- Main component for a primary marketing message or call to action -->
 	  <div class="jumbotron">
@@ -75,6 +144,12 @@
 	var dateType	 = "daily";
 	var chartType	 = "pie";
 	$(document).ready(function(){    
+		
+		bodySummary(); //몸 
+		foodSummary(); 
+		coffeeSummary();
+		diarySummary();
+		counselSummary();
 		
 		$(":input[name=clickChartDataD]").click(function(){
 			dateType = "daily";
@@ -126,7 +201,115 @@
 			fnGetChartData();
 		}); 
 		
-	});
+	});/* document ready */
+	
+	function bodySummary(){
+		$.ajax({
+			type:"POST",
+			dataType : "JSON",
+			url : "/sujin/main/getMainBodySummary.do",
+			success : function(data){
+				var avg = data.result;
+				
+				if(avg == null){
+					$("[name=bodySummary]").attr("class", "btn btn-danger");
+					$("[name=bodySummary]").text("입력안됨");
+				}else if(avg <= 1.5){
+					$("[name=bodySummary]").attr("class", "btn btn-danger");
+					$("[name=bodySummary]").text("매우나쁨");
+				}else if(avg <= 2.5 && avg > 1.5){
+					$("[name=bodySummary]").attr("class", "btn btn-warning");
+					$("[name=bodySummary]").text("나쁨");
+				}else if(avg <= 3.5 && avg > 2.5){
+					$("[name=bodySummary]").attr("class", "btn btn-default");
+					$("[name=bodySummary]").text("보통");
+				}else if(avg <= 4.5 && avg > 3.5){
+					$("[name=bodySummary]").attr("class", "btn btn-success");
+					$("[name=bodySummary]").text("좋음");
+				}else if(avg > 4.5){
+					$("[name=bodySummary]").attr("class", "btn btn-primary");
+					$("[name=bodySummary]").text("매우좋음");
+				}
+			},
+			error : function(xhr, status, error){
+				alert(status);
+			}
+		});
+	}
+	
+	function foodSummary(){
+		$.ajax({
+			type:"POST",
+			dataType : "JSON",
+			url : "/sujin/main/getMainFoodSummary.do",
+			success : function(data){
+				
+				$("[name=no_food]").addClass("hidden");
+				$("[name=food_lv]") .val(data.FOOD_LV);
+				$("[name=location]").val(data.LOCATION);
+				$("[name=rmk]")     .text(data.RMK);
+				
+			},
+			error  : function(xhr, status, error){
+				$(".food").find(".form-horizontal").addClass("hidden");
+				$("[name=no_food]").removeClass("hidden");
+			}
+		});
+	}
+	function coffeeSummary(){
+		//coffee_nm   drk_dt
+		$.ajax({
+			type:"POST",
+			dataType : "JSON",
+			url : "/sujin/main/getMainCoffeeSummary.do",
+			success : function(data){
+				
+				$("[name=no_coffee]").addClass("hidden");
+				$("[name=coffee_nm]").val(data.CF_NM);
+				$("[name=drk_dt]")   .val(data.DRK_DT);
+				
+			},
+			error  : function(xhr, status, error){
+				$(".coffee").find(".form-horizontal").addClass("hidden");
+				$("[name=no_coffee]").removeClass("hidden");
+			}
+		});
+	}
+	function diarySummary(){
+		$.ajax({
+			type:"POST",
+			//dataType : "JSON",
+			url : "/sujin/main/getMainDiarySummary.do",
+			success : function(data){
+				$("[name=diarySummary]");
+				if(data == 0){
+					$("[name=diarySummary]").attr("class", "btn btn-danger");
+					$("[name=diarySummary]").text("안씀");
+				}else{
+					$("[name=diarySummary]").attr("class", "btn btn-success");
+					$("[name=diarySummary]").text("씀");
+				}
+				
+			},
+			error  : function(xhr, status, error){
+				alert(status);
+			}
+		});
+	}
+	function counselSummary(){
+		$.ajax({
+			type:"POST",
+			dataType : "JSON",
+			url : "/sujin/main/getMainCounselSummary.do",
+			success : function(data){
+				alert(JSON.stringify(data));
+				
+			},
+			error  : function(xhr, status, error){
+				alert(status);
+			}
+		});
+	}
 	
 	/* -------------------------------------[구글 차트]------------------------------------------- */
  	// Load Charts and the corechart and barchart packages.
